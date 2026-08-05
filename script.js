@@ -120,23 +120,28 @@ items.forEach(item => {
 });
 
 // Dynamic String Logic
-const pin1 = document.getElementById('pin-1');
-const pin2 = document.getElementById('pin-2');
-const dynamicString = document.getElementById('dynamic-string');
-
 function updateString() {
-    if (!pin1 || !pin2 || !dynamicString) return;
+    const pin1 = document.getElementById('pin-1');
+    const pin2 = document.getElementById('pin-2');
+    const svgLayer = document.getElementById('string-svg');
+    const dynamicString = document.getElementById('dynamic-string');
 
-    // Get exact screen coordinates of the center of both pins
+    if (!pin1 || !pin2 || !dynamicString || !svgLayer) return;
+
+    // Ensure the SVG covers the entire scrollable document (solves cutoff bugs)
+    svgLayer.style.width = document.documentElement.scrollWidth + 'px';
+    svgLayer.style.height = document.documentElement.scrollHeight + 'px';
+
     const rect1 = pin1.getBoundingClientRect();
     const rect2 = pin2.getBoundingClientRect();
 
-    // The visual base of the pin is slightly lower than the div's center
-    const cx1 = rect1.left + (rect1.width / 2);
-    const cy1 = rect1.top + (rect1.height / 2) + 5;
+    // Calculate center points of the pins, relative to the DOCUMENT (adding scroll offset)
+    // This allows the SVG to scroll naturally with the page without lag on mobile
+    let cx1 = rect1.left + window.scrollX + (rect1.width / 2);
+    let cy1 = rect1.top + window.scrollY + (rect1.height / 2) + 5;
     
-    const cx2 = rect2.left + (rect2.width / 2);
-    const cy2 = rect2.top + (rect2.height / 2) + 5;
+    let cx2 = rect2.left + window.scrollX + (rect2.width / 2);
+    let cy2 = rect2.top + window.scrollY + (rect2.height / 2) + 5;
 
     // Calculate distance
     const dx = cx2 - cx1;
@@ -170,12 +175,6 @@ function renderLoop() {
 
 // Start the loop
 renderLoop();
-
-// iOS Safari fix: rAF doesn't fire during momentum scroll.
-// Adding a scroll listener forces the string to update in real-time while scrolling.
-window.addEventListener('scroll', updateString, { passive: true });
-// Also listen for touchmove to catch active finger-on-screen scrolling
-window.addEventListener('touchmove', updateString, { passive: true });
 
 // Flashlight Effect (Spotlight on cursor)
 document.addEventListener('mousemove', (e) => {

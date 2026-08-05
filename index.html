@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARTDHA FILE - Detective Board</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="board">
+        <!-- Background string connections -->
+        <svg class="string-layer" id="string-svg">
+            <line id="dynamic-string" x1="0" y1="0" x2="0" y2="0" class="red-string" />
+        </svg>
+
+        <!-- Top Left Folder Tab -->
+        <div class="folder-tab">
+            <span>ARTDHA FILE</span>
+            <div class="confidential-stamp">CONFIDENTIAL</div>
+        </div>
+
+        <!-- Top Right Navigation -->
+        <nav class="nav-pins">
+            <a href="#" class="nav-pin active" title="Home"><i class="fa-solid fa-house"></i></a>
+            <a href="#" class="nav-pin" title="Profile"><i class="fa-solid fa-user-secret"></i></a>
+            <a href="#" class="nav-pin" title="Skills"><i class="fa-solid fa-chart-simple"></i></a>
+            <a href="#" class="nav-pin" title="Portfolio"><i class="fa-solid fa-book-journal-whills"></i></a>
+            <a href="#" class="nav-pin" title="Contact"><i class="fa-solid fa-bookmark"></i></a>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="evidence-container">
+            <!-- Left Side: Document with paper bg -->
+            <div class="evidence-item document" id="doc-1">
+                <div class="pin top-center-pin" id="pin-1"></div>
+                <div class="paper-content">
+                    <div class="title-block">SUSPECT</div>
+                    <div class="subtitle-block">GAME DEVELOPER & 3D MODELING</div>
+                    
+                    <div class="description-text">
+                        <p>Welcome to Artdha File, my personal game development and 3D modeling portfolio. This space showcases a collection of diverse projects, from complete game builds to detailed character models. Explore my skills in Unity, Blender, and creative storytelling. Here you will find examples of my journey in creating engaging digital experiences.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Green Note -->
+            <div class="evidence-item note-green" id="photo-1">
+                <div class="pin top-center-pin" id="pin-2"></div>
+                <svg width="240" height="180" viewBox="0 0 200 150" class="note-face">
+                    <!-- Left Eyebrow -->
+                    <path d="M 30 35 Q 55 20 80 35" fill="none" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+                    <!-- Right Eyebrow -->
+                    <path d="M 120 35 Q 145 20 170 35" fill="none" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+                    <!-- Left Eye -->
+                    <circle cx="55" cy="75" r="18" fill="#111"/>
+                    <circle cx="62" cy="68" r="5" fill="white"/>
+                    <!-- Right Eye -->
+                    <circle cx="145" cy="75" r="18" fill="#111"/>
+                    <circle cx="152" cy="68" r="5" fill="white"/>
+                    <!-- Mouth -->
+                    <path d="M 40 110 Q 100 135 160 110" fill="none" stroke="#111" stroke-width="12" stroke-linecap="round"/>
+                    <!-- Teeth -->
+                    <path d="M 90 122 L 90 135 L 115 135 L 115 122 Z" fill="#111" stroke="#111" stroke-width="2"/>
+                    <rect x="93" y="122" width="8" height="10" fill="white"/>
+                    <rect x="104" y="122" width="8" height="10" fill="white"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Sticky Note -->
+        <div class="evidence-item note sticky-note" style="top: 70%; left: 45%; --rot: 2deg;">
+            <p>Don't forget to check your SUSPECT!</p>
+        </div>
+        <!-- Flashlight Overlay -->
+        <div class="flashlight-overlay"></div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

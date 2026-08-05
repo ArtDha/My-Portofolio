@@ -43,11 +43,11 @@ body, html {
 
 /* Connecting Strings */
 .string-layer {
-    position: absolute; /* Kembali ke absolute agar terscroll natural oleh browser */
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    /* height akan diatur oleh JS sebesar scrollHeight */
+    width: 100vw;
+    height: 100vh;
     z-index: 900; /* Set very high so it goes OVER papers */
     pointer-events: none;
     filter: drop-shadow(2px 5px 3px rgba(0,0,0,0.5));
@@ -349,7 +349,7 @@ body, html {
         --rot: -2deg;
         
         /* Ganti 'top' dengan 'margin-top' agar tidak menyisakan ruang kosong di bawah */
-        margin-top: -30px; /* Dikurangi agar tidak terlalu menimpa green note */
+        margin-top: -120px; /* Merapatkan dokumen ke atas mendekati green note */
         left: 0;
         margin-bottom: 20px;
     }
@@ -399,11 +399,11 @@ body, html {
         bottom: 0;
         right: 0;
         left: 0;
-        width: 100vw;
+        width: 100%; /* Better than 100vw to avoid Safari scrollbar overflow bugs */
         display: flex;
-        justify-content: space-around;
-        gap: 0;
-        padding: 0 10px;
+        justify-content: center; /* Change from space-around to center to prevent Safari uneven spacing bugs */
+        gap: 15px; /* STRICT EVENGAP */
+        padding: 0;
         background: transparent;
         z-index: 1000;
     }
@@ -419,9 +419,28 @@ body, html {
         padding-top: 15px;
         transform: translateY(10px);
         box-shadow: 0 -5px 15px rgba(0,0,0,0.5); /* shadow upwards */
+        background: var(--folder-color); /* Reset hover state from desktop */
+        color: #444;
     }
-    .nav-pin:hover, .nav-pin.active {
+    
+    .nav-pin:nth-child(even) {
+        background: #c2b1a1;
+    }
+    
+    /* Disable regular hover on touch screens to prevent "stuck" hover states on iOS */
+    @media (hover: none) {
+        .nav-pin:hover {
+            transform: translateY(10px);
+        }
+        .nav-pin.active:hover {
+            transform: translateY(0);
+        }
+    }
+    
+    .nav-pin.active {
         transform: translateY(0); /* Pops up instead of dropping down */
+        background: #fff !important;
+        color: #000;
     }
     .folder-tab {
         font-size: 1rem;

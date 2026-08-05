@@ -25,19 +25,25 @@ const folderTab = document.querySelector('.folder-tab');
 navPins.forEach(pin => {
     pin.addEventListener('mouseenter', playPaperSound);
     
-    // Add scroll to top functionality for the Home button
-    if (pin.title === "Home") {
-        pin.addEventListener('click', (e) => {
-            e.preventDefault(); // Prevent default anchor jump
+    // Add click functionality for all nav buttons to update active state
+    pin.addEventListener('click', (e) => {
+        // Only prevent default if it's a dummy link, so real links still work if added later
+        if (pin.getAttribute('href') === '#') {
+            e.preventDefault();
+        }
+        
+        // Update active state for all pins
+        navPins.forEach(p => p.classList.remove('active'));
+        pin.classList.add('active');
+        
+        // If it's the Home button, scroll to top
+        if (pin.title === "Home") {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
-            // Update active state
-            navPins.forEach(p => p.classList.remove('active'));
-            pin.classList.add('active');
-        });
-    }
+        }
+    });
 });
 if (folderTab) {
     folderTab.addEventListener('mouseenter', playPaperSound);
@@ -120,28 +126,23 @@ items.forEach(item => {
 });
 
 // Dynamic String Logic
+const pin1 = document.getElementById('pin-1');
+const pin2 = document.getElementById('pin-2');
+const dynamicString = document.getElementById('dynamic-string');
+
 function updateString() {
-    const pin1 = document.getElementById('pin-1');
-    const pin2 = document.getElementById('pin-2');
-    const svgLayer = document.getElementById('string-svg');
-    const dynamicString = document.getElementById('dynamic-string');
+    if (!pin1 || !pin2 || !dynamicString) return;
 
-    if (!pin1 || !pin2 || !dynamicString || !svgLayer) return;
-
-    // Ensure the SVG covers the entire scrollable document (solves cutoff bugs)
-    svgLayer.style.width = document.documentElement.scrollWidth + 'px';
-    svgLayer.style.height = document.documentElement.scrollHeight + 'px';
-
+    // Get exact screen coordinates of the center of both pins
     const rect1 = pin1.getBoundingClientRect();
     const rect2 = pin2.getBoundingClientRect();
 
-    // Calculate center points of the pins, relative to the DOCUMENT (adding scroll offset)
-    // This allows the SVG to scroll naturally with the page without lag on mobile
-    let cx1 = rect1.left + window.scrollX + (rect1.width / 2);
-    let cy1 = rect1.top + window.scrollY + (rect1.height / 2) + 5;
+    // The visual base of the pin is slightly lower than the div's center
+    const cx1 = rect1.left + (rect1.width / 2);
+    const cy1 = rect1.top + (rect1.height / 2) + 5;
     
-    let cx2 = rect2.left + window.scrollX + (rect2.width / 2);
-    let cy2 = rect2.top + window.scrollY + (rect2.height / 2) + 5;
+    const cx2 = rect2.left + (rect2.width / 2);
+    const cy2 = rect2.top + (rect2.height / 2) + 5;
 
     // Calculate distance
     const dx = cx2 - cx1;

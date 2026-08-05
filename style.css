@@ -62,7 +62,7 @@ body, html {
 
 /* Top Left Tab */
 .folder-tab {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 2%;
     background: var(--folder-color);
@@ -112,7 +112,8 @@ body, html {
 .nav-pin {
     position: relative;
     width: 50px;
-    height: 70px;
+    height: 90px; /* Made taller to hide the top edge */
+    top: -20px;   /* Shifted up off-screen */
     background: var(--folder-color);
     display: flex;
     justify-content: center;
@@ -121,6 +122,7 @@ body, html {
     color: #444;
     font-size: 1.5rem;
     padding-bottom: 10px;
+    padding-top: 20px; /* Push icon down into the visible area */
     box-shadow: 2px 5px 15px rgba(0,0,0,0.5), inset 0 -2px 5px rgba(0,0,0,0.2);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 85%, 0% 100%);
@@ -195,7 +197,7 @@ body, html {
     width: 600px;
     padding: 30px 40px;
     left: 8%;
-    top: 12%;
+    top: 15%;
     --rot: -3deg;
     background-image: linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
     background-size: 100% 25px;
@@ -308,24 +310,91 @@ body, html {
         left: 5%;
         width: 450px;
     }
+    .note-green {
+        width: 300px;
+        height: 300px;
+        right: 5%;
+    }
 }
 @media (max-width: 768px) {
+    body, html {
+        overflow-y: auto; /* allow vertical scroll on mobile */
+    }
+    .board {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+    }
     .evidence-container {
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        overflow-y: auto;
-        padding-top: 100px;
+        padding-top: 120px;
+        padding-bottom: 100px;
+        gap: 60px;
+        height: auto;
     }
-    .document, .note-green, .sticky-note {
-        position: relative;
-        left: auto !important;
-        right: auto !important;
-        top: auto !important;
-        margin-bottom: 40px;
-        transform: rotate(0) !important;
+    .evidence-item {
+        position: relative !important; /* Stack them naturally */
+        left: 0 !important;
+        right: 0 !important;
+        top: 0 !important;
+    }
+    .document {
+        width: 90%;
+        padding: 20px 25px;
+        --rot: -2deg;
+    }
+    .note-green {
+        width: 90%;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        --rot: 2deg;
+    }
+    .sticky-note {
+        width: 80%;
+        --rot: -3deg;
     }
     .string-layer {
-        display: none;
+        display: block;
+        height: 100%; /* Cover the full scrollable area */
+    }
+    .flashlight-overlay {
+        display: none; /* Disable flashlight effect on touch screens */
+    }
+    .nav-pins {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100vw;
+        display: flex;
+        justify-content: space-around;
+        gap: 0;
+        padding: 0 10px;
+        background: transparent;
+        z-index: 1000;
+    }
+    .nav-pin {
+        width: 55px;
+        height: 85px; /* Taller to hide bottom edge */
+        top: auto; /* Reset desktop top offset */
+        bottom: -20px; /* Shift down off-screen */
+        font-size: 1.3rem;
+        /* Reverse the ribbon to point UP */
+        clip-path: polygon(50% 0%, 100% 15%, 100% 100%, 0% 100%, 0% 15%);
+        padding-bottom: 20px; /* Push icon up into the visible area */
+        padding-top: 15px;
+        transform: translateY(10px);
+        box-shadow: 0 -5px 15px rgba(0,0,0,0.5); /* shadow upwards */
+    }
+    .nav-pin:hover, .nav-pin.active {
+        transform: translateY(0); /* Pops up instead of dropping down */
+    }
+    .folder-tab {
+        font-size: 1rem;
+        padding: 10px 20px 20px 15px;
+        left: 0;
     }
 }

@@ -2,6 +2,33 @@
 const items = document.querySelectorAll('.evidence-item');
 let highestZ = 10; // Global counter for z-index stacking
 
+// Paper Sound Effect setup
+const paperSfx = new Audio('paper.mp3');
+
+function playPaperSound() {
+    // Clone node allows overlapping sounds if triggered quickly
+    const sound = paperSfx.cloneNode();
+    // Randomize pitch and volume slightly for realism
+    sound.volume = 0.2 + (Math.random() * 0.2); 
+    sound.playbackRate = 0.8 + (Math.random() * 0.4);
+    
+    // Play sound, catch errors (browsers block audio before user interacts with page)
+    sound.play().catch(err => {
+        console.log("Waiting for user interaction to play audio");
+    });
+}
+
+// Add sound to nav pins and folder tab as well
+const navPins = document.querySelectorAll('.nav-pin');
+const folderTab = document.querySelector('.folder-tab');
+
+navPins.forEach(pin => {
+    pin.addEventListener('mouseenter', playPaperSound);
+});
+if (folderTab) {
+    folderTab.addEventListener('mouseenter', playPaperSound);
+}
+
 items.forEach(item => {
     let isDragging = false;
     let currentX;
@@ -14,9 +41,18 @@ items.forEach(item => {
     // Set initial z-index
     item.style.zIndex = highestZ;
 
+    // Add sound on hover (mouseenter)
+    item.addEventListener('mouseenter', playPaperSound);
+
+    // Mouse Events
     item.addEventListener('mousedown', dragStart);
     document.addEventListener('mouseup', dragEnd);
     document.addEventListener('mousemove', drag);
+    
+    // Touch Events for Mobile
+    item.addEventListener('touchstart', dragStart, {passive: false});
+    document.addEventListener('touchend', dragEnd);
+    document.addEventListener('touchmove', drag, {passive: false});
 
     function dragStart(e) {
         // Don't drag if clicking on text
@@ -24,8 +60,11 @@ items.forEach(item => {
             return;
         }
 
-        initialX = e.clientX - xOffset;
-        initialY = e.clientY - yOffset;
+        const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+        const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
+        initialX = clientX - xOffset;
+        initialY = clientY - yOffset;
 
         if (e.target === item || item.contains(e.target)) {
             isDragging = true;
@@ -33,6 +72,9 @@ items.forEach(item => {
             // Bring to front permanently after drag
             highestZ++;
             item.style.zIndex = highestZ;
+            
+            // Play paper grab sound
+            playPaperSound();
         }
     }
 
@@ -45,10 +87,13 @@ items.forEach(item => {
 
     function drag(e) {
         if (isDragging) {
-            e.preventDefault();
+            e.preventDefault(); // Prevent scrolling while dragging
             
-            currentX = e.clientX - initialX;
-            currentY = e.clientY - initialY;
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            
+            currentX = clientX - initialX;
+            currentY = clientY - initialY;
 
             xOffset = currentX;
             yOffset = currentY;

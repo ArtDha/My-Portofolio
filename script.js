@@ -171,6 +171,12 @@ function renderLoop() {
 // Start the loop
 renderLoop();
 
+// iOS Safari fix: rAF doesn't fire during momentum scroll.
+// Adding a scroll listener forces the string to update in real-time while scrolling.
+window.addEventListener('scroll', updateString, { passive: true });
+// Also listen for touchmove to catch active finger-on-screen scrolling
+window.addEventListener('touchmove', updateString, { passive: true });
+
 // Flashlight Effect (Spotlight on cursor)
 document.addEventListener('mousemove', (e) => {
     // Set CSS variables with the cursor coordinates

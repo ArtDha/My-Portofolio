@@ -24,6 +24,20 @@ const folderTab = document.querySelector('.folder-tab');
 
 navPins.forEach(pin => {
     pin.addEventListener('mouseenter', playPaperSound);
+    
+    // Add scroll to top functionality for the Home button
+    if (pin.title === "Home") {
+        pin.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default anchor jump
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            // Update active state
+            navPins.forEach(p => p.classList.remove('active'));
+            pin.classList.add('active');
+        });
+    }
 });
 if (folderTab) {
     folderTab.addEventListener('mouseenter', playPaperSound);
@@ -48,23 +62,18 @@ items.forEach(item => {
     item.addEventListener('mousedown', dragStart);
     document.addEventListener('mouseup', dragEnd);
     document.addEventListener('mousemove', drag);
-    
-    // Touch Events for Mobile
-    item.addEventListener('touchstart', dragStart, {passive: false});
-    document.addEventListener('touchend', dragEnd);
-    document.addEventListener('touchmove', drag, {passive: false});
 
     function dragStart(e) {
+        // Disable dragging on mobile layout
+        if (window.innerWidth <= 768) return;
+        
         // Don't drag if clicking on text
         if (e.target.tagName.toLowerCase() === 'p' || e.target.tagName.toLowerCase() === 'h1' || e.target.tagName.toLowerCase() === 'h2') {
             return;
         }
 
-        const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-        const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-
-        initialX = clientX - xOffset;
-        initialY = clientY - yOffset;
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
 
         if (e.target === item || item.contains(e.target)) {
             isDragging = true;
@@ -89,11 +98,8 @@ items.forEach(item => {
         if (isDragging) {
             e.preventDefault(); // Prevent scrolling while dragging
             
-            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-            
-            currentX = clientX - initialX;
-            currentY = clientY - initialY;
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
 
             xOffset = currentX;
             yOffset = currentY;

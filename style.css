@@ -43,11 +43,11 @@ body, html {
 
 /* Connecting Strings */
 .string-layer {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     z-index: 900; /* Set very high so it goes OVER papers */
     pointer-events: none;
     filter: drop-shadow(2px 5px 3px rgba(0,0,0,0.5));
@@ -63,10 +63,10 @@ body, html {
 /* Top Left Tab */
 .folder-tab {
     position: fixed;
-    top: 0;
+    top: -20px; /* Menembus batas atas layar agar tidak bolong */
     left: 2%;
     background: var(--folder-color);
-    padding: 15px 40px 25px 30px;
+    padding: 35px 40px 25px 30px; /* Padding atas (35px) ditambah agar teks tetap di posisi semula */
     border-radius: 0 0 15px 15px;
     box-shadow: 2px 5px 15px rgba(0,0,0,0.5), inset 0 -2px 5px rgba(0,0,0,0.2);
     z-index: 10;
@@ -80,7 +80,7 @@ body, html {
 }
 
 .folder-tab:hover {
-    transform: translateY(0);
+    transform: translateY(0); /* Turun sedikit saat di-hover, tapi pangkalnya tetap tersembunyi */
 }
 
 .confidential-stamp {
@@ -177,13 +177,13 @@ body, html {
     box-shadow: 5px 10px 20px rgba(0,0,0,0.5);
     transition: transform 0.3s, box-shadow 0.3s;
     /* Base transform uses CSS variables */
-    transform: translate3d(var(--pos-x, 0px), var(--pos-y, 0px), 0) rotate(var(--rot, 0deg));
+    transform: translate3d(var(--pos-x, 0px), var(--pos-y, 0px), 0) rotate(var(--rot, 0deg)) scale(var(--scale, 1));
 }
 
 .evidence-item:hover {
     box-shadow: 10px 20px 30px rgba(0,0,0,0.6);
-    /* Add a slight pop effect on hover */
-    transform: translate3d(var(--pos-x, 0px), var(--pos-y, 0px), 0) rotate(var(--rot, 0deg)) scale(1.02);
+    /* Add a slight pop effect on hover based on base scale */
+    transform: translate3d(var(--pos-x, 0px), var(--pos-y, 0px), 0) rotate(var(--rot, 0deg)) scale(calc(var(--scale, 1) * 1.02));
 }
 
 .evidence-item.dragging {
@@ -329,35 +329,66 @@ body, html {
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        padding-top: 120px;
-        padding-bottom: 100px;
-        gap: 60px;
         height: auto;
+        
+        /* ATUR TINGGI & JARAK HALAMAN MOBILE DI SINI */
+        padding-top: 120px;
+        padding-bottom: 100px; /* Kurangi angka ini jika ruang kosong di paling bawah terlalu panjang (misal: 50px) */
+        gap: 60px; /* Kurangi angka ini jika jarak antar kertas terlalu jauh (misal: 20px) */
     }
     .evidence-item {
-        position: relative !important; /* Stack them naturally */
-        left: 0 !important;
-        right: 0 !important;
-        top: 0 !important;
+        position: relative !important; /* Memaksa elemen agar tersusun ke bawah, bukan bertumpuk */
     }
+
+    /* SILAKAN ATUR TATA LETAK MOBILE DI BAWAH INI */
+    
     .document {
-        width: 90%;
+        order: 2;
+        width: 90vw;
         padding: 20px 25px;
         --rot: -2deg;
+        
+        /* Ganti 'top' dengan 'margin-top' agar tidak menyisakan ruang kosong di bawah */
+        margin-top: -120px; /* Merapatkan dokumen ke atas mendekati green note */
+        left: 0;
+        margin-bottom: 20px;
     }
+    
     .note-green {
-        width: 90%;
-        height: auto;
-        aspect-ratio: 1 / 1;
+        order: 1;
+        width: 90vw;
+        height: 90vw;
         --rot: 2deg;
+        
+        /* Ganti 'top' dengan 'margin-top' agar tidak menyisakan ruang kosong di bawah */
+        margin-top: -100px; /* Mengangkat green note sedikit ke atas */
+        left: 0;
+        right: auto;
     }
+    
     .sticky-note {
-        width: 80%;
-        --rot: -3deg;
+        position: absolute !important; /* Dikeluarkan dari tumpukan agar bisa melayang bebas */
+        width: 130px;
+        height: 130px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 0.8rem;
+        padding: 10px;
+        --rot: 4deg;
+        
+        /* Pengaturan scale untuk mobile: ubah angka ini untuk membesarkan/mengecilkan */
+        --scale: 0.8; 
+        
+        /* Posisikan di pojok kanan atas layar (menimpa ujung green note) */
+        top: 0px !important; /* Gunakan !important agar mengalahkan style bawaan HTML */
+        right: 0px;
+        left: auto !important;
+        z-index: 50 !important; /* Memaksa selalu di atas */
     }
     .string-layer {
         display: block;
-        height: 100%; /* Cover the full scrollable area */
     }
     .flashlight-overlay {
         display: none; /* Disable flashlight effect on touch screens */
@@ -394,7 +425,14 @@ body, html {
     }
     .folder-tab {
         font-size: 1rem;
-        padding: 10px 20px 20px 15px;
         left: 0;
+        
+        /* ATUR KETINGGIAN & POSISI HEADER MOBILE DI SINI */
+        /* 'top' mengatur letak tab. -20px berarti masuk ke dalam atas layar. Ubah jadi 0 atau positif jika ingin menurunkannya */
+        top: -5px;
+        
+        /* 'padding' mengatur ukuran ruang di dalam tab (Atas Kanan Bawah Kiri) */
+        /* Jika teks ingin lebih ke bawah, besarkan angka pertama (30px) */
+        padding: 30px 20px 20px 15px;
     }
 }

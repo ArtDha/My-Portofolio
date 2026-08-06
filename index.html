@@ -5,12 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARTDHA FILE - Detective Board</title>
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Sync loader state -->
+    <script>
+        window.assetsLoaded = { window: false, threeD: false };
+        function checkAllLoaded() {
+            if (window.assetsLoaded.window && window.assetsLoaded.threeD) {
+                // Tunggu animasi loading bar selesai (2.5 detik)
+                setTimeout(() => {
+                    // Sembunyikan bar dan teks loading
+                    document.querySelector('.retro-loading-bar').style.display = 'none';
+                    document.getElementById('terminal-text').style.display = 'none';
+                    
+                    // Tampilkan nama tersangka "ARTDHA"
+                    const suspectName = document.getElementById('suspect-name');
+                    suspectName.style.display = 'block';
+                    
+                    // Tahan nama di layar selama 1.5 detik
+                    setTimeout(() => {
+                        const terminal = document.getElementById('preloader-terminal');
+                        const cloth = document.getElementById('preloader-cloth');
+                        
+                        // 1. Matikan layar terminal (fade out)
+                        terminal.style.opacity = '0';
+                        
+                        // 2. Setelah terminal mati, tarik kain kuning ke atas
+                        setTimeout(() => {
+                            cloth.classList.add('curtain-open');
+                            setTimeout(() => { cloth.style.display = 'none'; }, 1200); 
+                        }, 500); // 0.5s waktu terminal fade out
+                        
+                    }, 1500);
+                    
+                }, 2500);
+            }
+        }
+        window.addEventListener('load', () => {
+            window.assetsLoaded.window = true;
+            checkAllLoaded();
+        });
+        
+        // Safety Fallback: Jika koneksi internet lambat atau Three.js gagal diload,
+        // paksa buka preloader setelah 5 detik agar website tidak stuck.
+        setTimeout(() => {
+            if (!window.assetsLoaded.threeD) {
+                console.warn("3D Assets took too long or failed to load. Bypassing preloader.");
+                window.assetsLoaded.threeD = true;
+                checkAllLoaded();
+            }
+        }, 5000);
+    </script>
+
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- PRELOADER (Cloth Cover + CRT Terminal) -->
+    <div id="preloader-cloth">
+        <div id="preloader-terminal">
+            <div class="crt-overlay"></div>
+            <div class="terminal-container">
+                <div class="fingerprint-box">
+                    <i class="fa-solid fa-fingerprint"></i>
+                    <div class="scan-line"></div>
+                </div>
+                <div id="terminal-text" class="scanner-text">ANALYZING BIOMETRICS...</div>
+                
+                <!-- Blocky Retro Loading Bar -->
+                <div class="retro-loading-bar">
+                    <div class="retro-progress"></div>
+                </div>
+                
+                <!-- Suspect Name (Hidden initially) -->
+                <div id="suspect-name" class="suspect-text" style="display:none;">MATCH FOUND: ARTDHA</div>
+            </div>
+        </div>
+    </div>
+
     <div class="board">
         <!-- Background string connections -->
         <svg class="string-layer" id="string-svg">
@@ -25,15 +108,15 @@
 
         <!-- Top Right Navigation -->
         <nav class="nav-pins">
-            <a href="#" class="nav-pin active" title="Home"><i class="fa-solid fa-house"></i></a>
-            <a href="#" class="nav-pin" title="Profile"><i class="fa-solid fa-user-secret"></i></a>
-            <a href="#" class="nav-pin" title="Skills"><i class="fa-solid fa-chart-simple"></i></a>
-            <a href="#" class="nav-pin" title="Portfolio"><i class="fa-solid fa-book-journal-whills"></i></a>
-            <a href="#" class="nav-pin" title="Contact"><i class="fa-solid fa-bookmark"></i></a>
+            <a href="#home-section" class="nav-pin active" title="Home"><i class="fa-solid fa-house"></i></a>
+            <a href="#project-section" class="nav-pin" title="Project"><i class="fa-solid fa-book-journal-whills"></i></a>
+            <a href="#skill-section" class="nav-pin" title="Skill"><i class="fa-solid fa-chart-simple"></i></a>
+            <a href="#about-section" class="nav-pin" title="About me"><i class="fa-solid fa-user-secret"></i></a>
+            <a href="#contact-section" class="nav-pin" title="Contact"><i class="fa-solid fa-bookmark"></i></a>
         </nav>
 
         <!-- Main Content Area -->
-        <div class="evidence-container">
+        <div class="evidence-container" id="home-section">
             <!-- Left Side: Document with paper bg -->
             <div class="evidence-item document" id="doc-1">
                 <div class="pin top-center-pin" id="pin-1"></div>
@@ -75,10 +158,96 @@
             </div>
         </div>
 
+        <!-- Project Section -->
+        <div class="evidence-container project-container" id="project-section">
+            
+            <!-- Title Note -->
+            <div class="evidence-item title-note" id="proj-title">
+                <div class="pin top-center-pin" id="pin-proj-title"></div>
+                <h2>EVIDENCE</h2>
+            </div>
+            
+            <!-- Character Model -->
+            <div class="evidence-item character-model" id="character-1">
+                <div class="pin top-center-pin" id="pin-char"></div>
+                <!-- Gambar 2D Default (akan disembunyikan jika 3D berhasil diload) -->
+                <img src="game-saya.png" alt="3D Character Fallback" id="char-img-fallback" style="width: 100%; height: auto; filter: drop-shadow(5px 15px 10px rgba(0,0,0,0.5));" />
+                <!-- Container untuk WebGL Three.js -->
+                <div id="3d-container" style="width: 100%; height: 350px; display: none;"></div>
+            </div>
+            
+            <!-- Left Side (Game Folder & Photos) -->
+            <a href="game-project.html" class="evidence-item project-folder folder-yellow portal-link" id="folder-game">
+                <div class="pin top-center-pin" id="pin-folder-game"></div>
+                <div class="folder-tab-small">FOLDER GAME</div>
+                <div class="folder-content">
+                    <div class="folder-text">
+                        <strong>DETAIL INFORMATION</strong><br>
+                        GAMES FROM UNITY AND ROBLOX STUDIO.<br>
+                        <div class="verified-stamp">VERIFIED</div>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="https://www.roblox.com/id/games/101372609278801/Sinaw" target="_blank" rel="noopener noreferrer" class="evidence-item polaroid portal-link" id="photo-game-1">
+                <div class="pin top-center-pin" id="pin-pg1"></div>
+                <img src="gambar-game-1.png" class="photo-image" alt="Screenshot Game 1" />
+                <div class="photo-caption">SINAW (ROBLOX)</div>
+            </a>
+            
+            <a href="https://artdha.itch.io/truthsteps" target="_blank" rel="noopener noreferrer" class="evidence-item polaroid portal-link" id="photo-game-2">
+                <div class="pin top-center-pin" id="pin-pg2"></div>
+                <img src="gambar-game-2.jpg" class="photo-image" alt="Screenshot Game 2" />
+                <div class="photo-caption">TRUTHSTEPS (ANDROID)</div>
+            </a>
+            
+            <a href="https://itch.io/" target="_blank" rel="noopener noreferrer" class="evidence-item polaroid portal-link" id="photo-game-3">
+                <div class="pin top-center-pin" id="pin-pg3"></div>
+                <img src="gambar-game-3.png" class="photo-image" alt="Screenshot Game 3" />
+                <div class="photo-caption">PROTOCOL-05 (WINDOWS)</div>
+            </a>
+
+            <!-- Right Side (3D Folder & Photos) -->
+            <a href="3d-project.html" class="evidence-item project-folder folder-yellow portal-link" id="folder-3d">
+                <div class="pin top-center-pin" id="pin-folder-3d"></div>
+                <div class="folder-tab-small">FOLDER 3D</div>
+                <div class="folder-content">
+                    <div class="folder-text">
+                        <strong>DETAIL INFORMATION</strong><br>
+                        PROJECTS FROM BLENDER.<br>
+                        <div class="verified-stamp">VERIFIED</div>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="https://skfb.ly/pGMWK" target="_blank" rel="noopener noreferrer" class="evidence-item polaroid portal-link" id="photo-3d-1">
+                <div class="pin top-center-pin" id="pin-p3d1"></div>
+                <img src="gambar-3d-1.png" class="photo-image" alt="Render 3D 1" />
+                <div class="photo-caption">BAKSO & MIE AYAM</div>
+            </a>
+            
+            <a href="https://skfb.ly/pG9Qp" target="_blank" rel="noopener noreferrer" class="evidence-item polaroid portal-link" id="photo-3d-2">
+                <div class="pin top-center-pin" id="pin-p3d2"></div>
+                <img src="gambar-3d-2.png" class="photo-image" alt="Render 3D 2" />
+                <div class="photo-caption">VEHICLE WASH</div>
+            </a>
+            
+            <a href="https://skfb.ly/pGLQL" target="_blank" rel="noopener noreferrer" class="evidence-item polaroid portal-link" id="photo-3d-3">
+                <div class="pin top-center-pin" id="pin-p3d3"></div>
+                <img src="gambar-3d-3.png" class="photo-image" alt="Render 3D 3" />
+                <div class="photo-caption">FOOD STALL</div>
+            </a>
+
+        </div>
+
         <!-- Flashlight Overlay -->
         <div class="flashlight-overlay"></div>
     </div>
     
     <script src="script.js"></script>
+    <!-- Data GLB yang sudah diconvert ke Base64 agar tidak diblokir CORS -->
+    <script src="model_data.js"></script>
+    <!-- Script khusus untuk 3D Model dan Fisika (dijalankan sebagai module) -->
+    <script type="module" src="3d-script.js"></script>
 </body>
 </html>

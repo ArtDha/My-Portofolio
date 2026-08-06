@@ -1,3 +1,9 @@
+// Force scroll to top on page load (Home section)
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 // Make elements draggable for a more interactive "detective board" feel
 const items = document.querySelectorAll('.evidence-item');
 let highestZ = 10; // Global counter for z-index stacking
@@ -25,26 +31,54 @@ const folderTab = document.querySelector('.folder-tab');
 navPins.forEach(pin => {
     pin.addEventListener('mouseenter', playPaperSound);
     
-    // Add click functionality for all nav buttons to update active state
+    // Smooth scroll functionality for all nav buttons
     pin.addEventListener('click', (e) => {
-        // Only prevent default if it's a dummy link, so real links still work if added later
-        if (pin.getAttribute('href') === '#') {
+        const targetId = pin.getAttribute('href');
+        
+        // If it's a real anchor link (starts with #)
+        if (targetId.startsWith('#')) {
             e.preventDefault();
-        }
-        
-        // Update active state for all pins
-        navPins.forEach(p => p.classList.remove('active'));
-        pin.classList.add('active');
-        
-        // If it's the Home button, scroll to top
-        if (pin.title === "Home") {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            const targetSection = document.querySelector(targetId);
+            
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
         }
     });
 });
+
+// ScrollSpy: Update active nav pin based on scroll position using IntersectionObserver
+const sections = document.querySelectorAll('.evidence-container');
+const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5 // Trigger when at least 50% of the section is visible
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const activeId = entry.target.id;
+            
+            // Remove active class from all pins
+            navPins.forEach(p => p.classList.remove('active'));
+            
+            // Add active class to corresponding pin
+            const activePin = document.querySelector(`.nav-pin[href="#${activeId}"]`);
+            if (activePin) {
+                activePin.classList.add('active');
+            }
+        }
+    });
+}, observerOptions);
+
+// Observe all sections
+sections.forEach(section => {
+    if (section.id) {
+        observer.observe(section);
+    }
+});
+
 if (folderTab) {
     folderTab.addEventListener('mouseenter', playPaperSound);
 }
@@ -61,8 +95,16 @@ items.forEach(item => {
     // Set initial z-index
     item.style.zIndex = highestZ;
 
-    // Add sound on hover (mouseenter)
-    item.addEventListener('mouseenter', playPaperSound);
+    // Add sound and bring to front on hover
+    item.addEventListener('mouseenter', () => {
+        playPaperSound();
+        
+        // Hanya item di luar project-section yang z-index nya permanen naik
+        if (!item.closest('#project-section')) {
+            highestZ++;
+            item.style.zIndex = highestZ;
+        }
+    });
 
     // Mouse Events
     item.addEventListener('mousedown', dragStart);
@@ -73,8 +115,12 @@ items.forEach(item => {
         // Disable dragging on mobile layout
         if (window.innerWidth <= 768) return;
         
-        // Don't drag if clicking on text
-        if (e.target.tagName.toLowerCase() === 'p' || e.target.tagName.toLowerCase() === 'h1' || e.target.tagName.toLowerCase() === 'h2') {
+        // Disable dragging for portal links
+        if (item.classList.contains('portal-link')) return;
+
+        // Don't drag if clicking on text or 3D canvas
+        const tag = e.target.tagName.toLowerCase();
+        if (tag === 'p' || tag === 'h1' || tag === 'h2' || tag === 'canvas') {
             return;
         }
 
@@ -90,6 +136,10 @@ items.forEach(item => {
             
             // Play paper grab sound
             playPaperSound();
+
+            if (item.id === 'character-1') {
+                window.isCharDragging = true;
+            }
         }
     }
 
@@ -98,6 +148,10 @@ items.forEach(item => {
         initialY = currentY;
         isDragging = false;
         item.classList.remove('dragging');
+        
+        if (item.id === 'character-1') {
+            window.isCharDragging = false;
+        }
     }
 
     function drag(e) {
@@ -109,6 +163,14 @@ items.forEach(item => {
 
             xOffset = currentX;
             yOffset = currentY;
+
+            // --- ADDED FOR 3D PHYSICS ---
+            // Expose velocity to the global window object so 3d-script.js can read it
+            if (item.id === 'character-1') {
+                window.charDragVelocityX = e.movementX;
+                window.charDragVelocityY = e.movementY;
+            }
+            // -----------------------------
 
             setTranslate(currentX, currentY, item);
         }
@@ -126,47 +188,78 @@ items.forEach(item => {
 });
 
 // Dynamic String Logic
-const pin1 = document.getElementById('pin-1');
-const pin2 = document.getElementById('pin-2');
-const dynamicString = document.getElementById('dynamic-string');
+// Configuration for all string connections
+const connections = [
+    { from: 'pin-1', to: 'pin-2' }, // Home section: Document to Green Note
+    { from: 'pin-2', to: 'pin-proj-title' }, // Bridge: Green Note to Project Title
+    { from: 'pin-proj-title', to: 'pin-folder-game' }, // Project: Title to Game Folder
+    { from: 'pin-folder-game', to: 'pin-pg1' }, // Game Folder to Photo 1
+    { from: 'pin-folder-game', to: 'pin-pg2' }, // Game Folder to Photo 2
+    { from: 'pin-folder-game', to: 'pin-pg3' }, // Game Folder to Photo 3
+    { from: 'pin-proj-title', to: 'pin-folder-3d' }, // Project: Title to 3D Folder
+    { from: 'pin-folder-3d', to: 'pin-p3d1' }, // 3D Folder to Photo 1
+    { from: 'pin-folder-3d', to: 'pin-p3d2' }, // 3D Folder to Photo 2
+    { from: 'pin-folder-3d', to: 'pin-p3d3' }, // 3D Folder to Photo 3
+    { from: 'pin-proj-title', to: 'pin-char' } // Project: Title to Character
+];
+
+const stringSvg = document.getElementById('string-svg');
+const svgNS = "http://www.w3.org/2000/svg";
+
+// Initialize SVG lines
+const lineElements = [];
+connections.forEach(conn => {
+    const line = document.createElementNS(svgNS, 'line');
+    line.setAttribute('class', 'red-string');
+    stringSvg.appendChild(line);
+    lineElements.push({
+        lineNode: line,
+        pinFrom: document.getElementById(conn.from),
+        pinTo: document.getElementById(conn.to)
+    });
+});
 
 function updateString() {
-    if (!pin1 || !pin2 || !dynamicString) return;
+    lineElements.forEach(connection => {
+        const p1 = connection.pinFrom;
+        const p2 = connection.pinTo;
+        const line = connection.lineNode;
+        
+        if (!p1 || !p2 || !line) return;
 
-    // Get exact screen coordinates of the center of both pins
-    const rect1 = pin1.getBoundingClientRect();
-    const rect2 = pin2.getBoundingClientRect();
+        const rect1 = p1.getBoundingClientRect();
+        const rect2 = p2.getBoundingClientRect();
 
-    // The visual base of the pin is slightly lower than the div's center
-    const cx1 = rect1.left + (rect1.width / 2);
-    const cy1 = rect1.top + (rect1.height / 2) + 5;
-    
-    const cx2 = rect2.left + (rect2.width / 2);
-    const cy2 = rect2.top + (rect2.height / 2) + 5;
+        const cx1 = rect1.left + (rect1.width / 2);
+        const cy1 = rect1.top + (rect1.height / 2) + 5;
+        const cx2 = rect2.left + (rect2.width / 2);
+        const cy2 = rect2.top + (rect2.height / 2) + 5;
 
-    // Calculate distance
-    const dx = cx2 - cx1;
-    const dy = cy2 - cy1;
-    const dist = Math.sqrt(dx*dx + dy*dy);
-    
-    // We shorten the line by 15px on each side so it stops at the edge of the pin
-    // and doesn't draw *over* the pin head, even though the line's z-index is high.
-    const R = 15; 
-    
-    let x1 = cx1, y1 = cy1, x2 = cx2, y2 = cy2;
-    if (dist > R * 2) {
-        x1 = cx1 + (dx / dist) * R;
-        y1 = cy1 + (dy / dist) * R;
-        x2 = cx2 - (dx / dist) * R;
-        y2 = cy2 - (dy / dist) * R;
-    }
+        // Calculate distance and shorten the line by 15px so it stops at the edge of the pin
+        const dx = cx2 - cx1;
+        const dy = cy2 - cy1;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        
+        const R = 15; // Radius of the pin head to avoid overlapping
+        
+        let x1 = cx1, y1 = cy1, x2 = cx2, y2 = cy2;
+        if (dist > R * 2) {
+            x1 = cx1 + (dx / dist) * R;
+            y1 = cy1 + (dy / dist) * R;
+            x2 = cx2 - (dx / dist) * R;
+            y2 = cy2 - (dy / dist) * R;
+        }
 
-    // Update the SVG line attributes
-    dynamicString.setAttribute('x1', x1);
-    dynamicString.setAttribute('y1', y1);
-    dynamicString.setAttribute('x2', x2);
-    dynamicString.setAttribute('y2', y2);
+        // Apply coordinates directly to SVG line
+        line.setAttribute('x1', x1);
+        line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2);
+        line.setAttribute('y2', y2);
+    });
 }
+
+window.addEventListener('scroll', updateString);
+window.addEventListener('resize', updateString);
 
 // Continuous update loop so the string follows CSS hover animations perfectly
 function renderLoop() {
@@ -183,3 +276,17 @@ document.addEventListener('mousemove', (e) => {
     document.documentElement.style.setProperty('--cursor-x', `${e.clientX}px`);
     document.documentElement.style.setProperty('--cursor-y', `${e.clientY}px`);
 });
+
+// EXPERIMENT: Diagonal Scrolling
+window.addEventListener('wheel', (e) => {
+    if (window.innerWidth <= 768) return; // Ignore on mobile
+    if (e.deltaY !== 0) {
+        e.preventDefault();
+        window.scrollBy({
+            left: e.deltaY * 0.8, // Scroll right
+            top: e.deltaY,      // Scroll down
+            behavior: 'auto'
+        });
+    }
+}, { passive: false });
+

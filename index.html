@@ -9,9 +9,24 @@
     <!-- Sync loader state -->
     <script>
         window.assetsLoaded = { window: false, threeD: false };
+        
+        // Animasi progress bar (Maksimal mentok di 90% sampai aslinya selesai)
+        let progress = 0;
+        let progressInterval = setInterval(() => {
+            if (progress < 90) {
+                progress += Math.floor(Math.random() * 15) + 5; // Naik random 5-20%
+                if (progress > 90) progress = 90;
+                document.querySelector('.retro-progress').style.width = progress + '%';
+            }
+        }, 300);
+
         function checkAllLoaded() {
             if (window.assetsLoaded.window && window.assetsLoaded.threeD) {
-                // Tunggu animasi loading bar selesai (2.5 detik)
+                // Hentikan animasi palsu dan paksa 100% karena sudah selesai loading
+                clearInterval(progressInterval);
+                document.querySelector('.retro-progress').style.width = '100%';
+                
+                // Tunggu sebentar agar user sempat melihat bar mencapai 100% (0.5 detik)
                 setTimeout(() => {
                     // Sembunyikan bar dan teks loading
                     document.querySelector('.retro-loading-bar').style.display = 'none';
@@ -37,7 +52,7 @@
                         
                     }, 1500);
                     
-                }, 2500);
+                }, 500);
             }
         }
         window.addEventListener('load', () => {

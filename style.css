@@ -198,7 +198,7 @@ body, html {
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 900; /* Set very high so it goes OVER papers */
+    z-index: 4; /* Di bawah .evidence-container (z-index: 5) agar tali ada di belakang kertas/model */
     pointer-events: none;
     filter: drop-shadow(2px 5px 3px rgba(0,0,0,0.5));
 }
@@ -501,6 +501,13 @@ a.portal-link:hover {
 #pin-proj-title {
     top: -25px; /* Atur angka ini untuk menaikkan/menurunkan pin */
     left: 50%;  /* Atur angka ini untuk menggeser pin ke kiri/kanan */
+}
+
+/* Hilangkan gambar pin di 3D model, tapi tetap bisa jadi titik sambung tali */
+#pin-char {
+    opacity: 0;
+    pointer-events: none;
+    top: 10px;
 }
 
 .character-model {

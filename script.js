@@ -1,3 +1,13 @@
+// --- PENGATURAN 3D MODEL ---
+// Anda bisa mengubah angka-angka di bawah ini untuk mengatur posisi & ukuran 3D Model:
+window.MODEL_CONFIG = {
+    scaleSize: 3,         // Makin besar angka, model makin besar (Default: 3)
+    positionY: 0.5,       // Naik/Turun. Positif (+) naik mendekati tali, Negatif (-) turun (Default: 0.6)
+    positionX: 0,         // Geser Kiri/Kanan. Positif (+) ke Kanan, Negatif (-) ke Kiri (Default: 0)
+    positionZ: 0          // Maju/Mundur. Positif (+) Maju mendekat layar, Negatif (-) Mundur (Default: 0)
+};
+// ---------------------------
+
 // Force scroll to top on page load (Home section)
 if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';

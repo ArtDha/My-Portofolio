@@ -193,12 +193,12 @@ body, html {
 
 /* Connecting Strings */
 .string-layer {
-    position: fixed;
+    position: absolute; /* Diganti ke absolute agar scroll sinkron dengan halaman */
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 4; /* Di bawah .evidence-container (z-index: 5) agar tali ada di belakang kertas/model */
+    width: 100%;
+    height: 100%;
+    z-index: 9000; /* Di atas kertas (10) agar tak tertutup, tapi di bawah bayangan gelap (9999) agar tak seperti laser */
     pointer-events: none;
     filter: drop-shadow(2px 5px 3px rgba(0,0,0,0.5));
 }
@@ -218,7 +218,7 @@ body, html {
     padding: 35px 40px 25px 30px; /* Padding atas (35px) ditambah agar teks tetap di posisi semula */
     border-radius: 0 0 15px 15px;
     box-shadow: 2px 5px 15px rgba(0,0,0,0.5), inset 0 -2px 5px rgba(0,0,0,0.2);
-    z-index: 10;
+    z-index: 9900; /* Ditinggikan agar setara navbar, di atas tali & kertas */
     font-family: 'Special Elite', cursive;
     font-size: 1.5rem;
     font-weight: bold;
@@ -248,29 +248,6 @@ body, html {
     pointer-events: none;
 }
 
-#project-section .evidence-item {
-    z-index: 10000 !important; /* Stand above the flashlight overlay */
-}
-
-/* Static spotlight glow for project items */
-#project-section .evidence-item::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 450px;
-    height: 450px;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(255, 255, 220, 0.25) 0%, rgba(255, 255, 220, 0.1) 40%, transparent 70%);
-    z-index: -1;
-    pointer-events: none;
-    border-radius: 50%;
-}
-
-#project-section .evidence-item:hover {
-    z-index: 10001 !important; /* Temporarily bring to front on hover */
-}
-
 /* Portal Links (Un-draggable, Clickable elements) */
 a.portal-link {
     text-decoration: none;
@@ -291,7 +268,7 @@ a.portal-link:hover {
     right: 50px;
     display: flex;
     gap: 15px;
-    z-index: 20000; /* Increased z-index to stay above everything when scrolling */
+    z-index: 9900; /* Diubah agar berada di bawah bayangan senter (9999) */
 }
 
 .nav-pin {
@@ -354,7 +331,6 @@ a.portal-link:hover {
     justify-content: center;
     align-items: center;
     padding-top: 50px;
-    z-index: 5;
 }
 
 /* Project Specific Container overrides */
@@ -366,6 +342,8 @@ a.portal-link:hover {
     position: absolute;
     box-shadow: 5px 10px 20px rgba(0,0,0,0.5);
     transition: transform 0.3s, box-shadow 0.3s;
+    /* Ubah titik pusat animasi (pivot) ke atas tengah (posisi pin) */
+    transform-origin: 50% 0%;
     /* Base transform uses CSS variables */
     transform: translate3d(var(--pos-x, 0px), var(--pos-y, 0px), 0) rotate(var(--rot, 0deg)) scale(var(--scale, 1));
 }
@@ -470,7 +448,7 @@ a.portal-link:hover {
     line-height: 1.4;
     box-shadow: 2px 5px 10px rgba(0,0,0,0.3);
     z-index: 101;
-    transform: rotate(-2deg);
+    transform: rotate(5deg);
 }
 .sticky-note::after {
     content: '';
@@ -514,9 +492,11 @@ a.portal-link:hover {
     top: 30%;
     left: 40%;
     width: 250px;
-    box-shadow: none !important; /* image has its own transparency */
     background: transparent;
-    z-index: 50;
+    border: none;
+    padding: 0;
+    box-shadow: none !important;
+    z-index: 9500 !important; /* Memaksa 3D model selalu di atas layer tali merah (9000), tapi di bawah flashlight (9999) */
 }
 .character-model img {
     width: 100%;
@@ -698,6 +678,27 @@ a.portal-link:hover {
         height: 300px;
         right: 5%;
     }
+    
+    /* Project Section Tablet Adjustments */
+    #folder-game {
+        left: 5%;
+    }
+    #folder-3d {
+        right: 5%;
+    }
+    .character-model {
+        width: 200px;
+        left: 50%;
+        transform: translate(-50%, 0) scale(var(--scale, 1)) rotate(var(--rot, 0deg));
+    }
+    
+    /* Reposition inner polaroids slightly to avoid clipping */
+    #photo-game-1 { left: 2%; }
+    #photo-game-2 { left: 15%; }
+    #photo-game-3 { left: 2%; }
+    #photo-3d-1 { right: 2%; }
+    #photo-3d-2 { right: 15%; }
+    #photo-3d-3 { right: 2%; }
 }
 @media (max-width: 768px) {
     body, html {
@@ -782,31 +783,59 @@ a.portal-link:hover {
     
     /* PROJECT SECTION MOBILE OVERRIDES */
     .project-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         padding-top: 50px;
-        gap: 30px;
+        gap: 10px; /* Jarak diperkecil agar pas dengan gambar yang lebih kecil */
+        align-items: start;
     }
+    
+    .title-note, .character-model, .project-folder {
+        grid-column: 1 / -1; /* Full width */
+        justify-self: center;
+        top: 0 !important;
+        left: 0 !important;
+        right: auto !important;
+        margin-bottom: 5px;
+    }
+    
     .title-note {
-        top: 0;
-        left: 0;
-        margin-bottom: 20px;
+        transform: scale(0.8) rotate(var(--rot, -2deg));
     }
-    .character-model {
-        top: 0;
-        left: 0;
-        width: 200px; /* slightly smaller on mobile */
-        margin-bottom: 30px;
-    }
+    
     .project-folder {
-        top: 0 !important;
-        left: 0 !important;
-        right: auto !important;
-        margin-bottom: 20px;
+        transform: scale(0.85); /* Folder diperkecil */
     }
+    
+    .character-model {
+        width: 70% !important;
+        max-width: 180px; /* 3D Model diperkecil */
+    }
+    
     .polaroid {
+        grid-column: auto; /* Flow into columns */
+        justify-self: center;
+        width: 100% !important;
+        max-width: 120px; /* Polaroid jauh lebih kecil */
+        height: auto; /* Hapus fix height 230px dari desktop agar proporsional */
         top: 0 !important;
         left: 0 !important;
         right: auto !important;
-        margin-bottom: 20px;
+        margin-bottom: 5px;
+        padding: 6px 6px 15px 6px; /* Padding ditipiskan proporsional */
+    }
+    
+    .polaroid .photo-image {
+        width: 100%;
+        height: auto; /* Biarkan tinggi menyesuaikan otomatis */
+        aspect-ratio: 9 / 8; /* Mempertahankan proporsi asli foto seperti di desktop */
+    }
+    
+    .polaroid .photo-caption {
+        font-size: 0.65rem; /* Teks caption diperkecil proporsional */
+        height: auto;
+        min-height: 25px;
+        margin-top: 5px;
     }
     /* END PROJECT SECTION MOBILE */
 

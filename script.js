@@ -240,17 +240,22 @@ function updateString() {
         const rect1 = p1.getBoundingClientRect();
         const rect2 = p2.getBoundingClientRect();
 
-        const cx1 = rect1.left + (rect1.width / 2);
-        const cy1 = rect1.top + (rect1.height / 2) + 5;
-        const cx2 = rect2.left + (rect2.width / 2);
-        const cy2 = rect2.top + (rect2.height / 2) + 5;
+        // Konversi koordinat Viewport ke koordinat Absolut Dokumen
+        // Ini memastikan tali menempel sempurna dengan pin meskipun sedang di-scroll (mencegah lag scroll di mobile)
+        const scrollX = window.scrollX || document.documentElement.scrollLeft;
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
 
-        // Calculate distance and shorten the line by 15px so it stops at the edge of the pin
+        const cx1 = rect1.left + scrollX + (rect1.width / 2);
+        const cy1 = rect1.top + scrollY + (rect1.height / 2) + 5;
+        const cx2 = rect2.left + scrollX + (rect2.width / 2);
+        const cy2 = rect2.top + scrollY + (rect2.height / 2) + 5;
+
+        // Calculate distance and shorten the line by 12.5px so it stops at the edge of the pin
         const dx = cx2 - cx1;
         const dy = cy2 - cy1;
         const dist = Math.sqrt(dx*dx + dy*dy);
         
-        const R = 15; // Radius of the pin head to avoid overlapping
+        const R = 12.5; 
         
         let x1 = cx1, y1 = cy1, x2 = cx2, y2 = cy2;
         if (dist > R * 2) {
@@ -260,11 +265,31 @@ function updateString() {
             y2 = cy2 - (dy / dist) * R;
         }
 
-        // Apply coordinates directly to SVG line
-        line.setAttribute('x1', x1);
-        line.setAttribute('y1', y1);
-        line.setAttribute('x2', x2);
-        line.setAttribute('y2', y2);
+        // Bulatkan koordinat ke bilangan bulat untuk menghilangkan fluktuasi subpixel secara total.
+        x1 = Math.round(x1);
+        y1 = Math.round(y1);
+        x2 = Math.round(x2);
+        y2 = Math.round(y2);
+
+        // Anti-Jitter Threshold
+        // Jangan update DOM SVG jika posisinya sama persis
+        // Ini mencegah tali terlihat "bergetar" atau terus-menerus sinkronisasi di DevTools.
+        if (
+            !connection.lastCoords ||
+            connection.lastCoords.x1 !== x1 ||
+            connection.lastCoords.y1 !== y1 ||
+            connection.lastCoords.x2 !== x2 ||
+            connection.lastCoords.y2 !== y2
+        ) {
+            // Apply coordinates directly to SVG line
+            line.setAttribute('x1', x1);
+            line.setAttribute('y1', y1);
+            line.setAttribute('x2', x2);
+            line.setAttribute('y2', y2);
+            
+            // Simpan koordinat terakhir
+            connection.lastCoords = { x1, y1, x2, y2 };
+        }
     });
 }
 

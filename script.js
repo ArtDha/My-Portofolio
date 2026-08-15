@@ -325,3 +325,69 @@ window.addEventListener('wheel', (e) => {
     }
 }, { passive: false });
 
+// ========== MOBILE INFINITE CAROUSEL ==========
+(function() {
+    if (window.innerWidth > 768) return; // Hanya aktif di mobile
+    
+    document.querySelectorAll('.carousel-track').forEach(track => {
+        let position = 0;
+        const speed = 0.4; // piksel per frame (kecepatan auto-scroll)
+        let isDragging = false;
+        let startX = 0;
+        let dragStartPos = 0;
+        let halfWidth = 0;
+        
+        // Hitung setengah lebar track (= lebar 3 item asli) setelah gambar dimuat
+        function calcHalf() {
+            halfWidth = track.scrollWidth / 2;
+        }
+        
+        // Hitung saat halaman siap
+        window.addEventListener('load', calcHalf);
+        // Backup: hitung ulang setelah 2 detik jika gambar lambat
+        setTimeout(calcHalf, 2000);
+        
+        function animate() {
+            if (!isDragging && halfWidth > 0) {
+                // Game = ke kiri (-1), 3D = ke kanan (+1)
+                const direction = track.dataset.carousel === '3d' ? 1 : -1;
+                position += (speed * direction);
+                
+                // Infinite loop: wrap around
+                if (position <= -halfWidth) {
+                    position += halfWidth;
+                } else if (position > 0) {
+                    position -= halfWidth;
+                }
+            }
+            track.style.transform = `translateX(${position}px)`;
+            requestAnimationFrame(animate);
+        }
+        
+        // Touch Events untuk swipe manual
+        track.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            dragStartPos = position;
+        }, { passive: true });
+        
+        track.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const diff = e.touches[0].clientX - startX;
+            position = dragStartPos + diff;
+            // Wrap around kedua arah
+            if (halfWidth > 0) {
+                if (position <= -halfWidth) position += halfWidth;
+                if (position > 0) position -= halfWidth;
+            }
+            track.style.transform = `translateX(${position}px)`;
+        }, { passive: true });
+        
+        track.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+        
+        // Mulai animasi
+        requestAnimationFrame(animate);
+    });
+})();

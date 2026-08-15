@@ -699,6 +699,12 @@ a.portal-link:hover {
     #photo-3d-2 { right: 15%; }
     #photo-3d-3 { right: 2%; }
 }
+
+/* Desktop: Sembunyikan carousel mobile */
+.mobile-carousel-section {
+    display: none;
+}
+
 @media (max-width: 768px) {
     body, html {
         overflow-y: auto; /* allow vertical scroll on mobile */
@@ -787,6 +793,20 @@ a.portal-link:hover {
         padding-top: 50px;
         gap: 10px; /* Jarak diperkecil agar pas dengan gambar yang lebih kecil */
         align-items: start;
+        position: relative;
+    }
+    
+    /* Background Hitam + Gradien Halus untuk Project Section di Mobile */
+    .project-container::before {
+        content: '';
+        position: absolute;
+        top: -150px; /* Mulai gradien 150px di atas project section */
+        left: -50vw; /* Pastikan selebar layar penuh */
+        width: 200vw;
+        height: calc(100% + 150px);
+        background: linear-gradient(to bottom, transparent 0%, rgba(15, 15, 15, 1) 150px, rgba(15, 15, 15, 1) 100%);
+        z-index: -1;
+        pointer-events: none;
     }
     
     .title-note, .project-folder {
@@ -849,17 +869,143 @@ a.portal-link:hover {
         box-shadow: none !important;
     }
     
+    /* Sembunyikan folder & polaroid desktop, ganti dengan carousel */
+    .project-folder,
     .polaroid {
-        grid-column: auto; /* Flow into columns */
-        justify-self: center;
-        width: 100% !important;
-        max-width: 120px; /* Polaroid jauh lebih kecil */
-        height: auto; /* Hapus fix height 230px dari desktop agar proporsional */
-        top: 0 !important;
-        left: 0 !important;
-        right: auto !important;
-        margin-bottom: 5px;
-        padding: 6px 6px 15px 6px; /* Padding ditipiskan proporsional */
+        display: none !important;
+    }
+    
+    /* Tampilkan carousel mobile */
+    .mobile-carousel-section {
+        display: block !important;
+        grid-column: 1 / -1;
+        width: 100%;
+        margin-bottom: 30px;
+        position: relative !important;
+    }
+    
+    .mobile-section-header {
+        padding: 0 15px;
+        margin-bottom: 20px;
+    }
+    
+    .mobile-section-title {
+        font-family: 'Courier Prime', monospace;
+        font-size: 1.1rem;
+        color: #e0e0e0;
+        border: 1px solid #666;
+        display: inline-block;
+        padding: 5px 15px;
+        margin-bottom: 12px;
+        letter-spacing: 1px;
+    }
+    
+    .mobile-section-desc {
+        font-family: 'Courier Prime', monospace;
+        font-size: 0.8rem;
+        color: #999;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+    
+    .mobile-view-more {
+        font-family: 'Courier Prime', monospace;
+        font-size: 0.75rem;
+        color: #e0e0e0;
+        border: 1px solid #777;
+        padding: 5px 14px;
+        text-decoration: none;
+        display: inline-block;
+        letter-spacing: 1px;
+        transition: background 0.2s;
+    }
+    
+    .mobile-view-more:active {
+        background: rgba(255,255,255,0.1);
+    }
+    
+    /* Clothesline Carousel */
+    .clothesline-carousel {
+        position: relative;
+        overflow: hidden;
+        padding-top: 45px; /* Ruang lebih besar untuk clothespin yang lebih panjang */
+        padding-bottom: 10px;
+    }
+    
+    .clothesline-wire {
+        position: absolute;
+        top: 35px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: #cc0000; /* Warna tali dikembalikan ke merah */
+        z-index: 1;
+        box-shadow: 0 1px 2px rgba(200, 0, 0, 0.4);
+    }
+    
+    .carousel-track {
+        display: flex;
+        gap: 15px;
+        width: max-content;
+        will-change: transform;
+        padding-left: 10px;
+        position: relative;
+        z-index: 2; /* Pastikan jepitan (bagian dari track) berada di atas tali */
+    }
+    
+    .carousel-polaroid {
+        flex-shrink: 0;
+        width: 120px;
+        background: #f5f5f0;
+        padding: 8px 8px 25px 8px;
+        position: relative;
+        text-decoration: none;
+        box-shadow: 3px 5px 12px rgba(0,0,0,0.5);
+        transition: transform 0.1s;
+    }
+    
+    .carousel-polaroid:nth-child(3n+1) { transform: rotate(2deg); }
+    .carousel-polaroid:nth-child(3n+2) { transform: rotate(-3deg); }
+    .carousel-polaroid:nth-child(3n+3) { transform: rotate(1deg); }
+    
+    .carousel-polaroid .clothespin {
+        position: absolute;
+        top: -30px; /* Clothespin ditarik lebih ke atas */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14px;
+        height: 40px; /* Clothespin lebih panjang */
+        background: linear-gradient(to right, #dcb79b 0%, #e6c8b1 50%, #cfa98b 100%); /* Warna jepitan kayu terang */
+        border-radius: 2px;
+        z-index: 2;
+        box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    }
+    
+    .carousel-polaroid .clothespin::after {
+        content: '';
+        position: absolute;
+        bottom: 8px; /* Posisi kawat jepitan */
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #8c6a51; /* Warna kawat jepitan */
+    }
+    
+    .carousel-polaroid img {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+        display: block;
+    }
+    
+    .carousel-polaroid span {
+        display: block;
+        font-family: 'Courier Prime', monospace;
+        font-size: 0.55rem;
+        color: #333;
+        text-align: center;
+        margin-top: 6px;
+        letter-spacing: 0.5px;
     }
     
     .polaroid .photo-image {

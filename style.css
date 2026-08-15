@@ -448,7 +448,6 @@ a.portal-link:hover {
     line-height: 1.4;
     box-shadow: 2px 5px 10px rgba(0,0,0,0.3);
     z-index: 101;
-    transform: rotate(5deg);
 }
 .sticky-note::after {
     content: '';
@@ -490,8 +489,8 @@ a.portal-link:hover {
 
 .character-model {
     top: 30%;
-    left: 40%;
-    width: 250px;
+    left: calc(50% - 75px); /* Posisi tepat di tengah secara horizontal (50% layar dikurangi setengah lebar kotak 150px) */
+    width: 150px;
     background: transparent;
     border: none;
     padding: 0;

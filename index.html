@@ -188,7 +188,7 @@
                 <!-- Gambar 2D Default (akan disembunyikan jika 3D berhasil diload) -->
                 <img src="game-saya.png" alt="3D Character Fallback" id="char-img-fallback" style="width: 100%; height: auto; filter: drop-shadow(5px 15px 10px rgba(0,0,0,0.5));" />
                 <!-- Container untuk WebGL Three.js -->
-                <div id="3d-container" style="width: 100%; height: 350px; display: none;"></div>
+                <div id="3d-container" style="width: 100%; height: 280px; display: none;"></div>
             </div>
             
             <!-- Left Side (Game Folder & Photos) -->
@@ -222,7 +222,7 @@
                 <div class="photo-caption">PROTOCOL-05 (WINDOWS)</div>
             </a>
 
-            <!-- Right Side (3D Folder & Photos) -->
+            <!-- Right Side (3D Folders & Photos) -->
             <a href="3d-project.html" class="evidence-item project-folder folder-yellow portal-link" id="folder-3d">
                 <div class="pin top-center-pin" id="pin-folder-3d"></div>
                 <div class="folder-tab-small">FOLDER 3D</div>
@@ -274,13 +274,14 @@ const container = document.getElementById('3d-container');
 const scene = new THREE.Scene();
 
 // Because container is display:none initially, clientWidth is 0. 
-// We use hardcoded dimensions matching the CSS width (250px) and height (350px).
-const width = 250;
-const height = 350;
+// We use hardcoded dimensions matching the CSS width (150px) and height (280px).
+const width = 150;
+const height = 280;
 
 // Camera setup
 const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-camera.position.set(0, 1.5, 5);
+// Didekatkan (Z diubah dari 5 ke 4) agar ukuran visual model tetap besar di canvas yang mengecil
+camera.position.set(0, 1.5, 4);
 
 // Renderer setup (alpha: true makes the background transparent)
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -413,6 +414,14 @@ window.addEventListener('resize', () => {
         camera.aspect = container.clientWidth / container.clientHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+});
+
+// Putar 3D model secara otomatis saat halaman di-scroll
+window.addEventListener('scroll', () => {
+    if (modelGroup) {
+        // window.scrollY dikali angka kecil (misal 0.01) untuk mengatur kecepatan putaran
+        modelGroup.rotation.y = window.scrollY * 0.01;
     }
 });
 

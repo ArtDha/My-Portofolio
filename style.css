@@ -777,7 +777,7 @@ a.portal-link:hover {
         z-index: 50 !important; /* Memaksa selalu di atas */
     }
     .string-layer {
-        display: block;
+        display: none !important;
     }
     
     /* PROJECT SECTION MOBILE OVERRIDES */
@@ -789,13 +789,20 @@ a.portal-link:hover {
         align-items: start;
     }
     
-    .title-note, .character-model, .project-folder {
+    .title-note, .character-model, .project-folder, #proj-sticky {
         grid-column: 1 / -1; /* Full width */
         justify-self: center;
         top: 0 !important;
         left: 0 !important;
         right: auto !important;
         margin-bottom: 5px;
+    }
+    
+    #proj-sticky {
+        position: relative !important; /* Kembalikan ke flow grid agar tidak terbang ke pojok */
+        margin-top: -20px;
+        margin-bottom: 20px;
+        z-index: 100;
     }
     
     .title-note {

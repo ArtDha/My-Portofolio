@@ -794,19 +794,47 @@ a.portal-link:hover {
         gap: 10px; /* Jarak diperkecil agar pas dengan gambar yang lebih kecil */
         align-items: start;
         position: relative;
+        z-index: 1; /* Memastikan background gradien tidak tenggelam di bawah papan */
     }
     
-    /* Background Hitam + Gradien Halus untuk Project Section di Mobile */
+    /* Background Hitam Solid untuk Project Section di Mobile */
     .project-container::before {
         content: '';
         position: absolute;
-        top: -150px; /* Mulai gradien 150px di atas project section */
+        top: -20px; /* Diturunkan dari -80px */
         left: -50vw; /* Pastikan selebar layar penuh */
         width: 200vw;
-        height: calc(100% + 150px);
-        background: linear-gradient(to bottom, transparent 0%, rgba(15, 15, 15, 1) 150px, rgba(15, 15, 15, 1) 100%);
+        height: calc(100% + 20px);
+        background: rgba(15, 15, 15, 1); /* Warna hitam solid, tanpa gradien */
         z-index: -1;
         pointer-events: none;
+    }
+
+    @keyframes warningTapeMobile {
+        0% { background-position: 0 0; }
+        100% { background-position: 56.56px 0; }
+    }
+
+    /* Pita Pembatas Animasi (Warning Tape) */
+    .project-container::after {
+        content: '';
+        position: absolute;
+        top: -20px; /* Tepat di batas atas background hitam */
+        left: -50vw;
+        width: 200vw;
+        height: 20px; /* Ketebalan pita */
+        background: repeating-linear-gradient(
+            -45deg,
+            #00ff33,
+            #00ff33 20px,
+            #000000 20px,
+            #000000 40px
+        );
+        background-size: 56.56px 56.56px;
+        z-index: 0;
+        pointer-events: none;
+        animation: warningTapeMobile 2s linear infinite;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.8);
     }
     
     .title-note, .project-folder {
@@ -885,43 +913,56 @@ a.portal-link:hover {
     }
     
     .mobile-section-header {
-        padding: 0 15px;
-        margin-bottom: 20px;
+        padding: 0 20px;
+        margin-bottom: 25px;
     }
     
     .mobile-section-title {
-        font-family: 'Courier Prime', monospace;
-        font-size: 1.1rem;
-        color: #e0e0e0;
-        border: 1px solid #666;
+        font-family: 'Special Elite', 'Courier Prime', monospace;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #1a1a1a;
+        background-color: #e8e6d9; /* Warna kertas tua */
+        border: none;
         display: inline-block;
-        padding: 5px 15px;
-        margin-bottom: 12px;
-        letter-spacing: 1px;
+        padding: 6px 12px;
+        margin-bottom: 15px;
+        letter-spacing: 1.5px;
+        box-shadow: 2px 3px 6px rgba(0,0,0,0.6);
+        transform: rotate(-2deg); /* Miring seperti ditempel manual */
     }
     
     .mobile-section-desc {
         font-family: 'Courier Prime', monospace;
-        font-size: 0.8rem;
-        color: #999;
+        font-size: 0.85rem;
+        color: #cccccc;
         line-height: 1.6;
-        margin-bottom: 12px;
+        margin-bottom: 20px;
+        border-left: 2px solid #cc0000; /* Garis aksen merah di kiri */
+        padding-left: 12px;
     }
     
     .mobile-view-more {
-        font-family: 'Courier Prime', monospace;
-        font-size: 0.75rem;
-        color: #e0e0e0;
-        border: 1px solid #777;
-        padding: 5px 14px;
+        font-family: 'Special Elite', 'Courier Prime', monospace;
+        font-size: 0.85rem;
+        font-weight: bold;
+        color: #c92a2a; /* Merah stempel rahasia */
+        background: transparent;
+        border: 2px solid #c92a2a;
+        padding: 6px 18px;
         text-decoration: none;
         display: inline-block;
         letter-spacing: 1px;
-        transition: background 0.2s;
+        transition: all 0.2s;
+        transform: rotate(1deg); /* Miring ala stempel */
+        border-radius: 3px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
     
     .mobile-view-more:active {
-        background: rgba(255,255,255,0.1);
+        background: #c92a2a;
+        color: #1a1a1a;
+        transform: scale(0.95) rotate(1deg);
     }
     
     /* Clothesline Carousel */

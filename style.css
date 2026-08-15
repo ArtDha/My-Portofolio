@@ -758,7 +758,7 @@ a.portal-link:hover {
     .sticky-note {
         position: absolute !important; /* Dikeluarkan dari tumpukan agar bisa melayang bebas */
         width: 130px;
-        height: 130px;
+        height: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -771,7 +771,7 @@ a.portal-link:hover {
         --scale: 0.8; 
         
         /* Posisikan di pojok kanan atas layar (menimpa ujung green note) */
-        top: 0px !important; /* Gunakan !important agar mengalahkan style bawaan HTML */
+        top: 10px !important; /* Gunakan !important agar mengalahkan style bawaan HTML */
         right: 0px;
         left: auto !important;
         z-index: 50 !important; /* Memaksa selalu di atas */
@@ -789,7 +789,7 @@ a.portal-link:hover {
         align-items: start;
     }
     
-    .title-note, .character-model, .project-folder, #proj-sticky {
+    .title-note, .project-folder {
         grid-column: 1 / -1; /* Full width */
         justify-self: center;
         top: 0 !important;
@@ -798,10 +798,34 @@ a.portal-link:hover {
         margin-bottom: 5px;
     }
     
+    /* 3D model di kiri, sticky note di kanan (sejajar) */
+    .character-model {
+        grid-column: 1; /* Kolom kiri */
+        justify-self: center;
+        top: 0 !important;
+        left: 20% !important;
+        right: auto !important;
+        margin-bottom: 5px;
+    }
+    
+    #proj-sticky {
+        grid-column: 2; /* Kolom kanan */
+        justify-self: center;
+        align-self: center;
+        top: -50 !important;
+        left: -20% !important;
+        right: auto !important;
+        margin-bottom: 5px;
+
+        /* TAMBAHKAN INI untuk atur ukuran: */
+        width: 180px;            /* Lebar sticky note (ubah angkanya sesuai selera) */
+        height: 50px;           /* Tinggi sticky note (ubah angkanya sesuai selera) */
+    }
+    
     #proj-sticky {
         position: relative !important; /* Kembalikan ke flow grid agar tidak terbang ke pojok */
-        margin-top: -20px;
-        margin-bottom: 20px;
+        margin-top: 0;
+        margin-bottom: 0;
         z-index: 100;
     }
     
@@ -816,6 +840,13 @@ a.portal-link:hover {
     .character-model {
         width: 70% !important;
         max-width: 180px; /* 3D Model diperkecil */
+    }
+    
+    /* Matikan efek hover pada 3D model di mobile agar tidak bergeser */
+    .character-model,
+    .character-model:hover {
+        transform: translate3d(var(--pos-x, 0px), var(--pos-y, 0px), 0) rotate(var(--rot, 0deg)) scale(var(--scale, 1)) !important;
+        box-shadow: none !important;
     }
     
     .polaroid {
@@ -844,6 +875,12 @@ a.portal-link:hover {
         margin-top: 5px;
     }
     /* END PROJECT SECTION MOBILE */
+    
+    /* Sembunyikan pin pada folder dan polaroid di mobile */
+    .project-folder .pin,
+    .polaroid .pin {
+        display: none !important;
+    }
 
     .flashlight-overlay {
         display: none; /* Disable flashlight effect on touch screens */

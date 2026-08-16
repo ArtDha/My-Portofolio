@@ -134,12 +134,20 @@
 }
 
 .suspect-text {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: bold;
     color: #ff3333; /* Red match */
-    text-shadow: 0 0 10px #ff3333;
-    letter-spacing: 5px;
-    animation: flash 0.5s infinite alternate;
+    text-shadow: 0 0 15px #ff0000;
+    text-align: center; /* Pastikan selalu rata tengah */
+    letter-spacing: 5px; /* Tetapkan spasi huruf standar */
+    white-space: nowrap; /* Paksa jadi satu baris */
+    width: max-content; /* Pastikan lebar mengikuti teks */
+    animation: dramaticReveal 2.5s ease-in forwards;
+}
+
+@keyframes dramaticReveal {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 @keyframes crt-scan {
@@ -448,6 +456,10 @@ a.portal-link:hover {
     line-height: 1.4;
     box-shadow: 2px 5px 10px rgba(0,0,0,0.3);
     z-index: 101;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 .sticky-note::after {
     content: '';
@@ -706,6 +718,11 @@ a.portal-link:hover {
 }
 
 @media (max-width: 768px) {
+    .suspect-text {
+        font-size: 1.3rem;
+        letter-spacing: 3px;
+    }
+    
     body, html {
         overflow-y: auto; /* allow vertical scroll on mobile */
     }

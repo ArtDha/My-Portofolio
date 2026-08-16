@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARTDHA FILE - Detective Board</title>
+    <title>CASE #0405 - Detective Board</title>
     <link rel="stylesheet" href="style.css">
     
     <!-- Sync loader state -->
@@ -26,33 +26,56 @@
                 clearInterval(progressInterval);
                 document.querySelector('.retro-progress').style.width = '100%';
                 
-                // Tunggu sebentar agar user sempat melihat bar mencapai 100% (0.5 detik)
+                // Tunggu sebentar (1 detik) agar tidak terburu-buru setelah loading selesai
                 setTimeout(() => {
-                    // Sembunyikan bar dan teks loading
+                    // Sembunyikan bar loading
                     document.querySelector('.retro-loading-bar').style.display = 'none';
-                    document.getElementById('terminal-text').style.display = 'none';
                     
-                    // Tampilkan nama tersangka "ARTDHA"
-                    const suspectName = document.getElementById('suspect-name');
-                    suspectName.style.display = 'block';
+                    // Ubah icon menjadi merah dan berkedip
+                    const fpBox = document.querySelector('.fingerprint-box');
+                    fpBox.style.color = '#ff3333';
+                    fpBox.style.borderColor = 'rgba(255, 51, 51, 0.2)';
+                    fpBox.style.textShadow = '0 0 10px #ff3333';
+                    fpBox.classList.add('match-found'); // Memicu animasi flash di CSS
+                    document.querySelector('.scan-line').style.display = 'none'; // Hentikan laser
                     
-                    // Tahan nama di layar selama 1.5 detik
+                    // Tampilkan MATCH FOUND: (tanpa spasi ekstra, center)
+                    const terminalText = document.getElementById('terminal-text');
+                    terminalText.innerText = 'MATCH FOUND:';
+                    terminalText.style.color = '#ff3333';
+                    terminalText.style.textShadow = '0 0 10px #ff3333';
+                    terminalText.style.borderRight = 'none'; // Hilangkan kursor hijau
+                    terminalText.style.animation = 'none'; // Hentikan animasi blink hijau
+                    terminalText.style.textAlign = 'center';
+                    
+                    // Delay dramatis (1 detik) sebelum teks kedua muncul
                     setTimeout(() => {
-                        const terminal = document.getElementById('preloader-terminal');
-                        const cloth = document.getElementById('preloader-cloth');
+                        // Tampilkan nama REZA ARDA RADESTA perlahan
+                        const suspectName = document.getElementById('suspect-name');
+                        suspectName.style.display = 'block';
                         
-                        // 1. Matikan layar terminal (fade out)
-                        terminal.style.opacity = '0';
-                        
-                        // 2. Setelah terminal mati, tarik kain kuning ke atas
+                        // Tahan layar agar bisa terbaca (3 detik)
                         setTimeout(() => {
-                            cloth.classList.add('curtain-open');
-                            setTimeout(() => { cloth.style.display = 'none'; }, 1200); 
-                        }, 500); // 0.5s waktu terminal fade out
+                            const terminal = document.getElementById('preloader-terminal');
+                            const cloth = document.getElementById('preloader-cloth');
+                            
+                            // 1. Matikan layar terminal pelan-pelan (fade out)
+                            terminal.style.transition = 'opacity 1.5s ease-out';
+                            terminal.style.opacity = '0';
+                            
+                            // 2. Setelah terminal redup, tarik tirai
+                            setTimeout(() => {
+                                cloth.style.transition = 'transform 1.2s cubic-bezier(0.77, 0, 0.175, 1)';
+                                cloth.classList.add('curtain-open');
+                                setTimeout(() => { cloth.style.display = 'none'; }, 1200); 
+                            }, 1200); 
+                            
+                        }, 3000); 
                         
-                    }, 1500);
+                    }, 1000); 
                     
-                }, 500);
+                }, 1000); // 1 detik jeda setelah loading 100%
+
             }
         }
         window.addEventListener('load', () => {
@@ -98,13 +121,16 @@
                 </div>
                 <div id="terminal-text" class="scanner-text">ANALYZING BIOMETRICS...</div>
                 
-                <!-- Blocky Retro Loading Bar -->
-                <div class="retro-loading-bar">
-                    <div class="retro-progress"></div>
+                <!-- Container dengan tinggi tetap untuk mencegah layout jump -->
+                <div class="status-container" style="height: 50px; position: relative; width: 100%; display: flex; justify-content: center;">
+                    <!-- Blocky Retro Loading Bar -->
+                    <div class="retro-loading-bar" style="position: absolute; top: 0;">
+                        <div class="retro-progress"></div>
+                    </div>
+                    
+                    <!-- Suspect Name (Hidden initially) -->
+                    <div id="suspect-name" class="suspect-text" style="display:none; position: absolute; top: -10px;">REZA ARDA RADESTA</div>
                 </div>
-                
-                <!-- Suspect Name (Hidden initially) -->
-                <div id="suspect-name" class="suspect-text" style="display:none;">MATCH FOUND: ARTDHA</div>
             </div>
         </div>
     </div>
@@ -117,7 +143,7 @@
 
         <!-- Top Left Folder Tab -->
         <div class="folder-tab">
-            <span>ARTDHA FILE</span>
+            <span>CASE #0405</span>
             <div class="confidential-stamp">CONFIDENTIAL</div>
         </div>
 
@@ -193,7 +219,7 @@
             
             <!-- Sticky Note under 3D Model -->
             <div class="evidence-item note sticky-note" id="proj-sticky" style="top: 70%; left: calc(50% - 100px); --rot: -4deg; z-index: 9600;">
-                <p>3D DEVELOPER</p>
+                <p>3D Character</p>
             </div>
             
             <!-- ========== MOBILE CAROUSEL SECTIONS (hidden on desktop) ========== -->

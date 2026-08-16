@@ -51,7 +51,23 @@ navPins.forEach(pin => {
             const targetSection = document.querySelector(targetId);
             
             if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth' });
+                if (document.body.classList.contains('diagonal-mode')) {
+                    const maxScroll = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
+                    let targetScrollY = 0;
+                    
+                    if (targetId === '#home-section') targetScrollY = 0;
+                    else if (targetId === '#project-section') targetScrollY = 0.25 * maxScroll;
+                    else if (targetId === '#skill-section') targetScrollY = 0.50 * maxScroll;
+                    else if (targetId === '#about-section') targetScrollY = 0.75 * maxScroll;
+                    else if (targetId === '#contact-section') targetScrollY = 1.0 * maxScroll;
+                    
+                    window.scrollTo({
+                        top: targetScrollY,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
             }
         }
     });
@@ -240,15 +256,13 @@ function updateString() {
         const rect1 = p1.getBoundingClientRect();
         const rect2 = p2.getBoundingClientRect();
 
-        // Konversi koordinat Viewport ke koordinat Absolut Dokumen
-        // Ini memastikan tali menempel sempurna dengan pin meskipun sedang di-scroll (mencegah lag scroll di mobile)
-        const scrollX = window.scrollX || document.documentElement.scrollLeft;
-        const scrollY = window.scrollY || document.documentElement.scrollTop;
-
-        const cx1 = rect1.left + scrollX + (rect1.width / 2);
-        const cy1 = rect1.top + scrollY + (rect1.height / 2) + 5;
-        const cx2 = rect2.left + scrollX + (rect2.width / 2);
-        const cy2 = rect2.top + scrollY + (rect2.height / 2) + 5;
+        // Koordinat relatif terhadap .board agar tahan terhadap transform/translasi
+        // Cache the board query if not cached, or just query it (we will define it globally)
+        const boardRect = window.boardElement ? window.boardElement.getBoundingClientRect() : (window.boardElement = document.querySelector('.board')).getBoundingClientRect();
+        const cx1 = rect1.left - boardRect.left + (rect1.width / 2);
+        const cy1 = rect1.top - boardRect.top + (rect1.height / 2) + 5;
+        const cx2 = rect2.left - boardRect.left + (rect2.width / 2);
+        const cy2 = rect2.top - boardRect.top + (rect2.height / 2) + 5;
 
         // Calculate distance and shorten the line by 12.5px so it stops at the edge of the pin
         const dx = cx2 - cx1;
@@ -327,7 +341,7 @@ window.addEventListener('wheel', (e) => {
 
 // ========== MOBILE INFINITE CAROUSEL ==========
 (function() {
-    if (window.innerWidth > 768) return; // Hanya aktif di mobile
+    // We remove the early return so the logic sets up properly even if the user starts on desktop and resizes to mobile.
     
     document.querySelectorAll('.carousel-track').forEach(track => {
         let position = 0;
@@ -342,8 +356,9 @@ window.addEventListener('wheel', (e) => {
             halfWidth = track.scrollWidth / 2;
         }
         
-        // Hitung saat halaman siap
+        // Hitung saat halaman siap dan saat di-resize
         window.addEventListener('load', calcHalf);
+        window.addEventListener('resize', calcHalf);
         // Backup: hitung ulang setelah 2 detik jika gambar lambat
         setTimeout(calcHalf, 2000);
         
@@ -391,3 +406,77 @@ window.addEventListener('wheel', (e) => {
         requestAnimationFrame(animate);
     });
 })();
+
+// EXPERIMENT: Diagonal Scrolling
+function setupDiagonalScroll() {
+    if (window.innerWidth > 768) {
+        document.body.classList.add('diagonal-mode');
+    } else {
+        document.body.classList.remove('diagonal-mode');
+        document.querySelector('.board').style.transform = '';
+    }
+}
+
+function handleDiagonalScroll() {
+    if (document.body.classList.contains('diagonal-mode')) {
+        const maxScroll = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
+        // Avoid division by zero
+        if (maxScroll <= 0) return;
+        
+        const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+        
+        // --- STICKY SCROLL LOGIC ---
+        // Creates a "dead zone" around each page where scrolling doesn't move the camera
+        function getStickyVal(rawVal, pauseSize) {
+            const index = Math.round(rawVal);
+            const dist = rawVal - index; // Range: -0.5 to 0.5
+            const halfPause = pauseSize / 2;
+            
+            // If within the pause radius, clamp to the exact page index
+            if (Math.abs(dist) <= halfPause) {
+                return index;
+            }
+            
+            // Otherwise, smoothly map the remaining distance
+            if (dist > 0) {
+                const mappedDist = (dist - halfPause) / (0.5 - halfPause);
+                return index + mappedDist * 0.5;
+            } else {
+                const mappedDist = (dist + halfPause) / (0.5 - halfPause);
+                return index + mappedDist * 0.5;
+            }
+        }
+        
+        const rawIndex = progress * 4; // 0 to 4
+        const stickyIndex = getStickyVal(rawIndex, 0.4); // 40% of the scroll space is paused (20% before, 20% after center)
+        const stickyProgress = stickyIndex / 4;
+        
+        let tx = 0;
+        let ty = 0;
+        
+        if (stickyProgress <= 0.25) {
+            // First 25% of scroll: Move RIGHT to Project (B1)
+            const xProgress = stickyProgress / 0.25;
+            tx = -xProgress * window.innerWidth;
+            ty = 0;
+        } else {
+            // Remaining 75% of scroll: Move DIAGONAL DOWN-RIGHT to Skill (C2), About (D3), Contact (E4)
+            const diagProgress = (stickyProgress - 0.25) / 0.75;
+            tx = -(1 + diagProgress * 3) * window.innerWidth;
+            ty = -(diagProgress * 3) * window.innerHeight;
+        }
+        
+        document.querySelector('.board').style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+    }
+}
+
+window.addEventListener('resize', () => {
+    setupDiagonalScroll();
+    handleDiagonalScroll();
+});
+
+window.addEventListener('scroll', handleDiagonalScroll, { passive: true });
+
+// Initialize immediately
+setupDiagonalScroll();
+handleDiagonalScroll();

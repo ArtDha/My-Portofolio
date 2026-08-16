@@ -1151,3 +1151,72 @@ a.portal-link:hover {
         padding: 30px 20px 20px 15px;
     }
 }
+
+/* EXPERIMENTAL: 2D Diagonal Scrolling Canvas (Desktop Only) */
+@media (min-width: 769px) {
+    body.diagonal-mode {
+        /* Force enough vertical scroll distance to allow 400vh of scroll progress */
+        height: 500vh !important;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+    
+    body.diagonal-mode .board {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 500vw;
+        height: 400vh;
+        will-change: transform;
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        /* Disable native scrolling inside board */
+        overflow: visible;
+    }
+    
+    body.diagonal-mode #home-section {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        /* Reset flex stacking behavior */
+    }
+    
+    body.diagonal-mode #project-section {
+        position: absolute;
+        top: 0; /* Row 1 */
+        left: 100vw; /* Column B */
+        width: 100vw;
+        height: 100vh;
+        margin-top: 0;
+    }
+    
+    body.diagonal-mode #skill-section {
+        position: absolute;
+        top: 100vh; /* Row 2 */
+        left: 200vw; /* Column C */
+        width: 100vw;
+        height: 100vh;
+    }
+    
+    body.diagonal-mode #about-section {
+        position: absolute;
+        top: 200vh; /* Row 3 */
+        left: 300vw; /* Column D */
+        width: 100vw;
+        height: 100vh;
+    }
+    
+    body.diagonal-mode #contact-section {
+        position: absolute;
+        top: 300vh; /* Row 4 */
+        left: 400vw; /* Column E */
+        width: 100vw;
+        height: 100vh;
+    }
+    
+    body.diagonal-mode #string-svg {
+        width: 500vw !important;
+        height: 400vh !important;
+    }
+}

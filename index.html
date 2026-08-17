@@ -60,21 +60,21 @@
                             const cloth = document.getElementById('preloader-cloth');
                             
                             // 1. Matikan layar terminal pelan-pelan (fade out)
-                            terminal.style.transition = 'opacity 1.5s ease-out';
+                            terminal.style.transition = 'opacity 0.8s ease-out';
                             terminal.style.opacity = '0';
                             
                             // 2. Setelah terminal redup, tarik tirai
                             setTimeout(() => {
-                                cloth.style.transition = 'transform 1.2s cubic-bezier(0.77, 0, 0.175, 1)';
+                                cloth.style.transition = 'transform 0.8s cubic-bezier(0.77, 0, 0.175, 1)';
                                 cloth.classList.add('curtain-open');
-                                setTimeout(() => { cloth.style.display = 'none'; }, 1200); 
-                            }, 1200); 
+                                setTimeout(() => { cloth.style.display = 'none'; }, 800); 
+                            }, 800); 
                             
-                        }, 3000); 
+                        }, 1000); 
                         
-                    }, 1000); 
+                    }, 400); 
                     
-                }, 1000); // 1 detik jeda setelah loading 100%
+                }, 200); // jeda singkat setelah loading 100%
 
             }
         }

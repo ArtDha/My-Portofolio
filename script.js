@@ -230,6 +230,10 @@ connections.forEach(conn => {
 });
 
 function updateString() {
+    // Optimasi Performa: Di mobile (<=768px), red string disembunyikan via CSS.
+    // Jadi kita tidak perlu menghitung getBoundingClientRect 60 kali sedetik!
+    if (window.innerWidth <= 768) return;
+
     lineElements.forEach(connection => {
         const p1 = connection.pinFrom;
         const p2 = connection.pinTo;

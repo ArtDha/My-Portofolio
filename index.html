@@ -108,8 +108,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Preload font stylesheet for faster FCP -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&family=Special+Elite&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&family=Special+Elite&display=swap"></noscript>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 </head>
 <body>
     <!-- PRELOADER (Cloth Cover + CRT Terminal) -->
@@ -214,7 +216,7 @@
             <div class="evidence-item character-model" id="character-1">
                 <div class="pin top-center-pin" id="pin-char"></div>
                 <!-- Gambar 2D Default (akan disembunyikan jika 3D berhasil diload) -->
-                <img src="game-saya.webp" alt="3D Character Fallback" id="char-img-fallback" style="width: 100%; height: auto; filter: drop-shadow(5px 15px 10px rgba(0,0,0,0.5));" />
+                <img loading="lazy" src="game-saya.webp" alt="3D Character Fallback" id="char-img-fallback" style="width: 100%; height: auto; filter: drop-shadow(5px 15px 10px rgba(0,0,0,0.5));" />
                 <!-- Container untuk WebGL Three.js -->
                 <div id="3d-container" style="width: 100%; height: 280px; display: none;"></div>
             </div>
@@ -235,13 +237,13 @@
                 <div class="clothesline-carousel">
                     <div class="clothesline-wire"></div>
                     <div class="carousel-track" data-carousel="game">
-                        <a href="https://www.roblox.com/id/games/101372609278801/Sinaw" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img src="gambar-game-1.webp" alt="Sinaw" /><span>SINAW</span></a>
-                        <a href="https://artdha.itch.io/truthsteps" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img src="gambar-game-2.webp" alt="Truthsteps" /><span>TRUTHSTEPS</span></a>
-                        <a href="https://itch.io/" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img src="gambar-game-3.webp" alt="Protocol-05" /><span>PROTOCOL-05</span></a>
+                        <a href="https://www.roblox.com/id/games/101372609278801/Sinaw" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img loading="lazy" src="gambar-game-1.webp" alt="Sinaw" /><span>SINAW</span></a>
+                        <a href="https://artdha.itch.io/truthsteps" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img loading="lazy" src="gambar-game-2.webp" alt="Truthsteps" /><span>TRUTHSTEPS</span></a>
+                        <a href="https://itch.io/" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img loading="lazy" src="gambar-game-3.webp" alt="Protocol-05" /><span>PROTOCOL-05</span></a>
                         <!-- Duplikat untuk efek infinite scroll -->
-                        <a href="https://www.roblox.com/id/games/101372609278801/Sinaw" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img src="gambar-game-1.webp" alt="Sinaw" /><span>SINAW</span></a>
-                        <a href="https://artdha.itch.io/truthsteps" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img src="gambar-game-2.webp" alt="Truthsteps" /><span>TRUTHSTEPS</span></a>
-                        <a href="https://itch.io/" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img src="gambar-game-3.webp" alt="Protocol-05" /><span>PROTOCOL-05</span></a>
+                        <a href="https://www.roblox.com/id/games/101372609278801/Sinaw" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img loading="lazy" src="gambar-game-1.webp" alt="Sinaw" /><span>SINAW</span></a>
+                        <a href="https://artdha.itch.io/truthsteps" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img loading="lazy" src="gambar-game-2.webp" alt="Truthsteps" /><span>TRUTHSTEPS</span></a>
+                        <a href="https://itch.io/" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img loading="lazy" src="gambar-game-3.webp" alt="Protocol-05" /><span>PROTOCOL-05</span></a>
                     </div>
                 </div>
             </div>
@@ -256,13 +258,13 @@
                 <div class="clothesline-carousel">
                     <div class="clothesline-wire"></div>
                     <div class="carousel-track" data-carousel="3d">
-                        <a href="https://skfb.ly/pGMWK" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img src="gambar-3d-1.webp" alt="Bakso & Mie Ayam" /><span>BAKSO & MIE AYAM</span></a>
-                        <a href="https://skfb.ly/pG9Qp" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img src="gambar-3d-2.webp" alt="Vehicle Wash" /><span>VEHICLE WASH</span></a>
-                        <a href="https://skfb.ly/pGLQL" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img src="gambar-3d-3.webp" alt="Food Stall" /><span>FOOD STALL</span></a>
+                        <a href="https://skfb.ly/pGMWK" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img loading="lazy" src="gambar-3d-1.webp" alt="Bakso & Mie Ayam" /><span>BAKSO & MIE AYAM</span></a>
+                        <a href="https://skfb.ly/pG9Qp" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img loading="lazy" src="gambar-3d-2.webp" alt="Vehicle Wash" /><span>VEHICLE WASH</span></a>
+                        <a href="https://skfb.ly/pGLQL" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img loading="lazy" src="gambar-3d-3.webp" alt="Food Stall" /><span>FOOD STALL</span></a>
                         <!-- Duplikat untuk efek infinite scroll -->
-                        <a href="https://skfb.ly/pGMWK" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img src="gambar-3d-1.webp" alt="Bakso & Mie Ayam" /><span>BAKSO & MIE AYAM</span></a>
-                        <a href="https://skfb.ly/pG9Qp" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img src="gambar-3d-2.webp" alt="Vehicle Wash" /><span>VEHICLE WASH</span></a>
-                        <a href="https://skfb.ly/pGLQL" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img src="gambar-3d-3.webp" alt="Food Stall" /><span>FOOD STALL</span></a>
+                        <a href="https://skfb.ly/pGMWK" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img loading="lazy" src="gambar-3d-1.webp" alt="Bakso & Mie Ayam" /><span>BAKSO & MIE AYAM</span></a>
+                        <a href="https://skfb.ly/pG9Qp" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img loading="lazy" src="gambar-3d-2.webp" alt="Vehicle Wash" /><span>VEHICLE WASH</span></a>
+                        <a href="https://skfb.ly/pGLQL" target="_blank" rel="noopener noreferrer" class="carousel-polaroid"><div class="clothespin"></div><img loading="lazy" src="gambar-3d-3.webp" alt="Food Stall" /><span>FOOD STALL</span></a>
                     </div>
                 </div>
             </div>
@@ -283,19 +285,19 @@
             
             <a href="https://www.roblox.com/id/games/101372609278801/Sinaw" target="_blank" rel="noopener noreferrer" class="evidence-item polaroid portal-link" id="photo-game-1">
                 <div class="pin top-center-pin" id="pin-pg1"></div>
-                <img src="gambar-game-1.webp" class="photo-image" alt="Screenshot Game 1" />
+                <img loading="lazy" src="gambar-game-1.webp" class="photo-image" alt="Screenshot Game 1" />
                 <div class="photo-caption">SINAW (ROBLOX)</div>
             </a>
             
             <a href="https://artdha.itch.io/truthsteps" target="_blank" rel="noopener noreferrer" class="evidence-item polaroid portal-link" id="photo-game-2">
                 <div class="pin top-center-pin" id="pin-pg2"></div>
-                <img src="gambar-game-2.webp" class="photo-image" alt="Screenshot Game 2" />
+                <img loading="lazy" src="gambar-game-2.webp" class="photo-image" alt="Screenshot Game 2" />
                 <div class="photo-caption">TRUTHSTEPS (ANDROID)</div>
             </a>
             
             <a href="https://itch.io/" target="_blank" rel="noopener noreferrer" class="evidence-item polaroid portal-link" id="photo-game-3">
                 <div class="pin top-center-pin" id="pin-pg3"></div>
-                <img src="gambar-game-3.webp" class="photo-image" alt="Screenshot Game 3" />
+                <img loading="lazy" src="gambar-game-3.webp" class="photo-image" alt="Screenshot Game 3" />
                 <div class="photo-caption">PROTOCOL-05 (WINDOWS)</div>
             </a>
 
@@ -314,19 +316,19 @@
             
             <a href="https://skfb.ly/pGMWK" target="_blank" rel="noopener noreferrer" class="evidence-item polaroid portal-link" id="photo-3d-1">
                 <div class="pin top-center-pin" id="pin-p3d1"></div>
-                <img src="gambar-3d-1.webp" class="photo-image" alt="Render 3D 1" />
+                <img loading="lazy" src="gambar-3d-1.webp" class="photo-image" alt="Render 3D 1" />
                 <div class="photo-caption">BAKSO & MIE AYAM</div>
             </a>
             
             <a href="https://skfb.ly/pG9Qp" target="_blank" rel="noopener noreferrer" class="evidence-item polaroid portal-link" id="photo-3d-2">
                 <div class="pin top-center-pin" id="pin-p3d2"></div>
-                <img src="gambar-3d-2.webp" class="photo-image" alt="Render 3D 2" />
+                <img loading="lazy" src="gambar-3d-2.webp" class="photo-image" alt="Render 3D 2" />
                 <div class="photo-caption">VEHICLE WASH</div>
             </a>
             
             <a href="https://skfb.ly/pGLQL" target="_blank" rel="noopener noreferrer" class="evidence-item polaroid portal-link" id="photo-3d-3">
                 <div class="pin top-center-pin" id="pin-p3d3"></div>
-                <img src="gambar-3d-3.webp" class="photo-image" alt="Render 3D 3" />
+                <img loading="lazy" src="gambar-3d-3.webp" class="photo-image" alt="Render 3D 3" />
                 <div class="photo-caption">FOOD STALL</div>
             </a>
 

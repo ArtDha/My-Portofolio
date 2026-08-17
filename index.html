@@ -65,16 +65,16 @@
                             
                             // 2. Setelah terminal redup, tarik tirai
                             setTimeout(() => {
-                                cloth.style.transition = 'transform 0.8s cubic-bezier(0.77, 0, 0.175, 1)';
+                                cloth.style.transition = 'transform 1s cubic-bezier(0.77, 0, 0.175, 1)';
                                 cloth.classList.add('curtain-open');
-                                setTimeout(() => { cloth.style.display = 'none'; }, 800); 
+                                setTimeout(() => { cloth.style.display = 'none'; }, 1000); 
                             }, 800); 
                             
-                        }, 1000); 
+                        }, 2800); // Tahan cukup lama (2.8s) agar animasi "dramaticReveal" selesai
                         
-                    }, 400); 
+                    }, 800); // Jeda membaca tulisan MATCH FOUND
                     
-                }, 200); // jeda singkat setelah loading 100%
+                }, 500); // Jeda sebelum memunculkan MATCH FOUND
 
             }
         }

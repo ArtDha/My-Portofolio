@@ -18,28 +18,12 @@ window.scrollTo(0, 0);
 const items = document.querySelectorAll('.evidence-item');
 let highestZ = 10; // Global counter for z-index stacking
 
-// Paper Sound Effect setup
-const paperSfx = new Audio('paper.mp3');
-
-function playPaperSound() {
-    // Clone node allows overlapping sounds if triggered quickly
-    const sound = paperSfx.cloneNode();
-    // Randomize pitch and volume slightly for realism
-    sound.volume = 0.2 + (Math.random() * 0.2); 
-    sound.playbackRate = 0.8 + (Math.random() * 0.4);
-    
-    // Play sound, catch errors (browsers block audio before user interacts with page)
-    sound.play().catch(err => {
-        console.log("Waiting for user interaction to play audio");
-    });
-}
-
-// Add sound to nav pins and folder tab as well
+// Paper Sound Effect setup removed
 const navPins = document.querySelectorAll('.nav-pin');
 const folderTab = document.querySelector('.folder-tab');
 
 navPins.forEach(pin => {
-    pin.addEventListener('mouseenter', playPaperSound);
+    
     
     // Smooth scroll functionality for all nav buttons
     pin.addEventListener('click', (e) => {
@@ -106,7 +90,7 @@ sections.forEach(section => {
 });
 
 if (folderTab) {
-    folderTab.addEventListener('mouseenter', playPaperSound);
+    
 }
 
 items.forEach(item => {
@@ -123,7 +107,7 @@ items.forEach(item => {
 
     // Add sound and bring to front on hover
     item.addEventListener('mouseenter', () => {
-        playPaperSound();
+        
         
         // Hanya item di luar project-section yang z-index nya permanen naik
         if (!item.closest('#project-section')) {
@@ -161,7 +145,7 @@ items.forEach(item => {
             item.style.zIndex = highestZ;
             
             // Play paper grab sound
-            playPaperSound();
+            
 
             if (item.id === 'character-1') {
                 window.isCharDragging = true;

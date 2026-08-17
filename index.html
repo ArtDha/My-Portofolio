@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CASE #0405 - Detective Board</title>
+    <!-- CSS External -->
     <link rel="stylesheet" href="style.css">
     
     <!-- Sync loader state -->
@@ -156,9 +157,10 @@
 
     <div class="board">
         <!-- Background string connections -->
-        <svg class="string-layer" id="string-svg">
-            <line id="dynamic-string" x1="0" y1="0" x2="0" y2="0" class="red-string" />
-        </svg>
+    <svg class="string-layer" id="string-svg-under" style="z-index: 2;"></svg>
+    <svg class="string-layer" id="string-svg">
+        <line id="dynamic-string" x1="0" y1="0" x2="0" y2="0" class="red-string" />
+    </svg>
 
         <!-- Main Content Area -->
         <div class="evidence-container" id="home-section">
@@ -335,10 +337,165 @@
         </div>
         
         <div class="evidence-container" id="skill-section">
-            <h1 style="color:white; font-size: 3rem; text-align: center; margin-top: 100px;">SKILL SECTION (COMING SOON)</h1>
+            <div style="position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                <div class="pin" id="pin-skill" style="position: absolute; top: 10%;"></div>
+                <h1 style="color:white; font-size: 3rem; text-align: center;">SKILL SECTION (COMING SOON)</h1>
+            </div>
         </div>
         <div class="evidence-container" id="about-section">
-            <h1 style="color:white; font-size: 3rem; text-align: center; margin-top: 100px;">ABOUT ME (COMING SOON)</h1>
+            <div class="about-desktop">
+                
+                <!-- Main Paper -->
+                <div class="about-paper draggable">
+                    <h2 class="about-name">MY NAME IS ARDA</h2>
+                    <hr class="about-line">
+                    <h3 class="about-role">I AM GAME DEVELOPER & 3D ARTIST</h3>
+                    <p class="about-desc">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non nibh finibus enim tempor sodales eu a ligula. In sed nisi faucibus, sodales libero eu, posuere mi. Curabitur vitae suscipit ante. Nam vestibulum urna nisl. Duis et mi sit amet neque fermentum aliquet non sed lacus. Aenean vitae sollicitudin erat, id dapibus urna. Nunc eu ligula vestibulum, placerat mi at, vulputate purus. Maecenas in ipsum mi. Duis sit amet nulla velit.
+                    </p>
+                </div>
+
+                <!-- ABOUT ME Note -->
+                <div class="about-note-title draggable">
+                    ABOUT ME
+                </div>
+
+                <!-- Download CV Note -->
+                <a href="#" class="about-note-cv draggable">
+                    DOWNLOAD CV
+                </a>
+
+                <!-- Polaroid -->
+                <div class="about-polaroid draggable">
+                    <div class="pin" id="pin-about-2"></div>
+                    <div class="polaroid-img-placeholder">
+                        <img src="foto-saya.webp" alt="Foto Reza Arda Radesta" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%) sepia(20%);">
+                    </div>
+                    <div class="polaroid-text">REZA ARDA RADESTA</div>
+                </div>
+
+                <!-- Skills -->
+                <div class="about-skills">
+                    <div class="skills-title">SKILL</div>
+                    <div class="skills-row">
+                        <a href="https://unity.com/" target="_blank" class="skill-note draggable">
+                            <img src="unity.webp" alt="Unity" style="width: 80%; height: 80%; object-fit: contain;">
+                        </a>
+                        <a href="https://www.blender.org/" target="_blank" class="skill-note draggable">
+                            <img src="blender.webp" alt="Blender" style="width: 80%; height: 80%; object-fit: contain;">
+                        </a>
+                        <a href="https://www.figma.com/" target="_blank" class="skill-note draggable">
+                            <img src="figma.webp" alt="Figma" style="width: 80%; height: 80%; object-fit: contain;">
+                        </a>
+                        <a href="https://hutonggames.com/" target="_blank" class="skill-note draggable">
+                            <img src="playmaker.webp" alt="Playmaker" style="width: 80%; height: 80%; object-fit: contain;">
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- MOBILE CIA CRIMINAL RECORD LAYOUT -->
+            <div class="about-mobile">
+                <div class="cia-document">
+                    <!-- Top Secret Warning -->
+                    <div class="cia-top-secret">
+                        <div class="cia-ts-title">TOP SECRET</div>
+                        <div class="cia-ts-desc">only authorised personnel open this file. this contains<br>important information about<br>"ArtDha"</div>
+                    </div>
+                    
+                    <!-- Header -->
+                    <div class="cia-header">
+                        <div class="cia-header-left">
+                            <img src="assets/images/logo.webp" alt="Logo" class="cia-logo-img">
+                            <div class="cia-header-text">
+                                <div class="cia-org">Central Intelligence Agency</div>
+                                <div class="cia-title">CRIMINAL RECORD</div>
+                                <div class="cia-id">#22389349891238</div>
+                            </div>
+                        </div>
+                        <div class="cia-header-right">
+                            <table class="cia-meta-table">
+                                <tr><td>FILE NUMBER</td><td>#16062003-531</td></tr>
+                                <tr><td>PURPOSE RECORD</td><td>G-123074-9(P)</td></tr>
+                                <tr><td>SRU ID</td><td>K007</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Main Body -->
+                    <div class="cia-body">
+                        <!-- Left Column -->
+                        <div class="cia-col-left">
+                            <div class="cia-subject-id">#ARD123905839841</div>
+                            <hr class="cia-hr">
+                            <div class="cia-banner">SUBJECT PROFILE</div>
+                            <div class="cia-list">
+                                <div class="cia-list-item"><strong>REAL NAME :</strong> Reza Arda Radesta</div>
+                                <div class="cia-list-item"><strong>A.K.A :</strong> ArtDha</div>
+                                <div class="cia-list-item"><strong>ROLE :</strong> Game Dev & 3D Artist</div>
+                                <div class="cia-list-item"><strong>TOOL :</strong> PlayMaker</div>
+                                <div class="cia-list-item"><strong>ART STYLE :</strong> Lowpoly</div>
+                                <div class="cia-list-item"><strong>ENGINE :</strong> UNITY</div>
+                                <div class="cia-list-item"><strong>FAV STYLE :</strong> PSX Retro</div>
+                            </div>
+                            
+                            <div class="cia-banner" style="margin-top: 15px;">BACKGROUND</div>
+                            <div class="cia-list">
+                                <div class="cia-list-item"><strong>EDUCATION :</strong> IIB DARMAJAYA</div>
+                                <div class="cia-list-item"><strong>MAJOR :</strong> S1 Teknik Informatika</div>
+                                <div class="cia-list-item"><strong>FIELD :</strong> Multimedia</div>
+                                <div class="cia-list-item"><strong>STATUS :</strong> Mahasiswa</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="cia-col-right">
+                            <div class="cia-photo-box">
+                                <img src="foto-saya.webp" alt="Reza Arda Radesta">
+                            </div>
+                            <div class="cia-wanted-text">MOST WANTED</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Report Section -->
+                    <div class="cia-report-section">
+                        <div class="cia-report-title">REPORT :</div>
+                        <p class="cia-report-text">
+                            Subject identified as Reza Arda Radesta, also known as ArtDha, a student of S1 Teknik Informatika at IIB Darmajaya. Subject is actively involved in game development and 3D art production, with a primary focus on Unity and PlayMaker. Known for a strong interest in lowpoly visuals and retro PSX-inspired style, subject continues to develop creative projects while expanding technical and artistic skills in the field of interactive media.
+                        </p>
+                    </div>
+                    
+                    <!-- Footer Section -->
+                    <div class="cia-footer">
+                        <div class="cia-skills-box">
+                            <div class="cia-skills-header">TOOLS SKILLS</div>
+                            <div class="cia-skills-icons">
+                                <a href="https://unity.com/" target="_blank"><img src="unity.webp" alt="Unity"></a>
+                                <a href="https://www.blender.org/" target="_blank"><img src="blender.webp" alt="Blender"></a>
+                                <a href="https://www.figma.com/" target="_blank"><img src="figma.webp" alt="Figma"></a>
+                                <a href="https://hutonggames.com/" target="_blank"><img src="playmaker.webp" alt="PlayMaker"></a>
+                            </div>
+                        </div>
+                        
+                        <div class="cia-qr-box">
+                            <a href="cv.pdf" target="_blank" class="cia-qr-link">
+                                <img src="qr-cv.webp" alt="QR Code CV" class="cia-qr-img">
+                                <div class="cia-qr-text">CLICK / SCAN QR TO DOWNLOAD CV</div>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Bottom Signature Warning -->
+                    <div class="cia-bottom-signature">
+                        <div class="cia-sign-warning">WARNING: UNAUTHORIZED REPRODUCTION IS STRICTLY PROHIBITED</div>
+                        <div class="cia-sign-box">
+                            <div class="cia-sign-line">AUTHORIZED SIGNATURE</div>
+                            <div class="cia-sign-text">DEPT. OF INTELLIGENCE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="evidence-container" id="contact-section">
             <h1 style="color:white; font-size: 3rem; text-align: center; margin-top: 100px;">CONTACT (COMING SOON)</h1>

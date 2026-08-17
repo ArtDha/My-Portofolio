@@ -483,7 +483,7 @@ a.portal-link:hover {
     top: 5%;
     left: 41%;
     --rot: -2deg;
-    z-index: 10;
+    z-index: 1;
 }
 
 /* Pengaturan KHUSUS untuk posisi Pin di Title "Project Tersangka / Barang Bukti" */
@@ -527,6 +527,7 @@ a.portal-link:hover {
     border-radius: 0 10px 10px 10px;
     padding: 15px;
     box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 5px 10px 20px rgba(0,0,0,0.4);
+    z-index: 5;
 }
 .folder-tab-small {
     position: absolute;
@@ -609,6 +610,7 @@ a.portal-link:hover {
     box-shadow: 2px 5px 15px rgba(0,0,0,0.4);
     display: flex;
     flex-direction: column;
+    z-index: 5;
 }
 .polaroid .photo-image {
     width: 100%;
@@ -821,8 +823,8 @@ a.portal-link:hover {
         top: -20px; /* Diturunkan dari -80px */
         left: -50vw; /* Pastikan selebar layar penuh */
         width: 200vw;
-        height: calc(100% + 20px);
-        background: rgba(15, 15, 15, 1); /* Warna hitam solid, tanpa gradien */
+        height: calc(100% + 100px); /* Diturunkan lebih jauh ke bawah */
+        background: linear-gradient(to bottom, rgba(15, 15, 15, 1) 92%, rgba(15, 15, 15, 0) 100%);
         z-index: -1;
         pointer-events: none;
     }
@@ -1185,38 +1187,1018 @@ a.portal-link:hover {
     body.diagonal-mode #project-section {
         position: absolute;
         top: 0; /* Row 1 */
-        left: 100vw; /* Column B */
+        left: 100vw; /* Column 2 */
         width: 100vw;
         height: 100vh;
         margin-top: 0;
     }
     
-    body.diagonal-mode #skill-section {
+    body.diagonal-mode #about-section {
         position: absolute;
         top: 100vh; /* Row 2 */
-        left: 200vw; /* Column C */
+        left: 100vw; /* Column 2 */
         width: 100vw;
         height: 100vh;
     }
-    
-    body.diagonal-mode #about-section {
+
+    body.diagonal-mode #skill-section {
         position: absolute;
-        top: 200vh; /* Row 3 */
-        left: 300vw; /* Column D */
+        top: 100vh; /* Row 2 */
+        left: 200vw; /* Column 3 */
         width: 100vw;
         height: 100vh;
     }
     
     body.diagonal-mode #contact-section {
         position: absolute;
-        top: 300vh; /* Row 4 */
-        left: 400vw; /* Column E */
+        top: 200vh; /* Row 3 */
+        left: 100vw; /* Column 2 */
         width: 100vw;
         height: 100vh;
     }
     
-    body.diagonal-mode #string-svg {
+    body.diagonal-mode #string-svg, body.diagonal-mode #string-svg-under {
         width: 500vw !important;
         height: 400vh !important;
+    }
+}
+
+/* ========== ABOUT ME SECTION ========== */
+
+.newspaper-clipping {
+    background-color: #f4ebd8;
+    background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.08"/></svg>');
+    padding: 30px;
+    width: 480px;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+    border: 1px solid #d3c4a3;
+    border-radius: 2px;
+}
+
+.newspaper-title {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #1a1a1a;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+}
+
+.newspaper-divider {
+    height: 2px;
+    background-color: #333;
+    margin: 10px 0;
+}
+
+.newspaper-subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.newspaper-text {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: #222;
+    text-align: justify;
+}
+
+.polaroid-about {
+    background: #fff;
+    padding: 15px 15px 40px 15px;
+    box-shadow: 3px 5px 15px rgba(0,0,0,0.3);
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.polaroid-image-placeholder {
+    width: 230px;
+    height: 230px;
+    background-color: #888;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.polaroid-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.polaroid-caption {
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #111;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.skill-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 20;
+}
+
+.skill-label {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.5rem;
+    color: #222;
+    margin-bottom: 5px;
+    transform: rotate(-5deg);
+}
+
+.skill-notes-row {
+    display: flex;
+    gap: 15px;
+}
+
+.skill-note {
+    width: 80px;
+    height: 80px;
+    background-color: #ffeb3b;
+    box-shadow: 2px 3px 6px rgba(0,0,0,0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-bottom-right-radius: 10px 5px;
+}
+
+.skill-icon {
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.2));
+}
+
+.download-cv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 220px;
+    height: 50px;
+    background-color: #ffeb3b;
+    color: #111;
+    text-decoration: none;
+    font-family: 'Arial', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+    border-bottom-right-radius: 15px 5px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    z-index: 20;
+}
+
+.download-cv:hover {
+    transform: translate(var(--pos-x), var(--pos-y)) scale(1.05) !important;
+    box-shadow: 4px 6px 12px rgba(0,0,0,0.4);
+}
+
+.pin-top-left {
+    top: -15px;
+    left: 20px;
+}
+
+.pin-top-center {
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+@media (max-width: 768px) {
+    /* About Me Mobile Adjustments */
+    .newspaper-clipping {
+        width: 90%;
+        padding: 20px;
+    }
+    .skill-container {
+        position: relative !important;
+        transform: none !important;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+        margin: 0 auto;
+        align-items: center;
+    }
+    .skill-label {
+        transform: none;
+    }
+    .skill-notes-row {
+        flex-wrap: wrap;
+        justify-content: center;
+    }}
+.about-title-note {
+    background: linear-gradient(135deg, #ffde59 80%, #e6c850 100%);
+    padding: 10px 20px;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.5rem;
+    color: #111;
+    box-shadow: 3px 5px 15px rgba(0,0,0,0.3);
+    border-bottom-right-radius: 15px 5px;
+    font-weight: bold;
+}
+/* ========== NEW ABOUT ME LAYOUT ========== */
+#about-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 50px;
+}
+
+.about-title-sticky {
+    background-color: #ffea00;
+    color: #1a1a1a;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 2.2rem;
+    padding: 10px 40px;
+    transform: rotate(-10deg) translateY(-30px);
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.4);
+    margin-bottom: 20px;
+    z-index: 10;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.about-desktop {
+    display: flex;
+    gap: 80px;
+    max-width: 1200px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+.about-internal-string {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.about-left {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.about-document {
+    background-color: #e3dec9; /* Old paper */
+    background-image: linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 100% 2.5rem;
+    padding: 50px 40px;
+    box-shadow: 3px 6px 15px rgba(0,0,0,0.5);
+    color: #1a1a1a;
+    position: relative;
+    transform: rotate(1deg);
+}
+
+.red-pin {
+    width: 16px;
+    height: 16px;
+    background-color: #ff3333;
+    border-radius: 50%;
+    box-shadow: 2px 3px 6px rgba(0,0,0,0.6), inset -2px -2px 4px rgba(0,0,0,0.3);
+    position: absolute;
+    z-index: 5;
+}
+.doc-pin {
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.polaroid-pin {
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.about-name {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+    letter-spacing: 1px;
+}
+
+.about-divider {
+    border: 0;
+    border-top: 2px solid #333;
+    margin: 0 0 20px 0;
+}
+
+.about-role {
+    font-family: 'Courier Prime', monospace;
+    font-size: 1.2rem;
+    margin: 0 0 20px 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.about-text {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #444;
+}
+
+.about-download-cv {
+    display: inline-block;
+    background-color: #ffea00;
+    color: #1a1a1a;
+    font-family: 'Courier Prime', monospace;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 15px 30px;
+    text-decoration: none;
+    text-align: center;
+    width: max-content;
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+.about-download-cv:hover {
+    transform: scale(1.05) rotate(-2deg);
+    box-shadow: 4px 6px 12px rgba(0,0,0,0.5);
+}
+
+.about-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+.about-polaroid .polaroid-img-placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    background-color: #888;
+    overflow: hidden;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+.about-polaroid .polaroid-img-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.5) contrast(1.2);
+}
+
+.about-polaroid .polaroid-text {
+    font-family: 'Courier Prime', monospace;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.3rem;
+    color: #1a1a1a;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    left: 0;
+}
+
+.about-skills {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align all items to the left edge of this block */
+}
+
+.skill-label {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.5rem;
+    color: #1a1a1a;
+    transform: rotate(-10deg);
+    margin-bottom: 15px;
+}
+
+.skill-notes {
+    display: flex;
+    gap: 15px;
+}
+
+.skill-sticky {
+    width: 70px;
+    height: 70px;
+    background-color: #ffea00;
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2rem;
+    color: #1a1a1a;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+.skill-sticky:nth-child(1) { transform: rotate(-5deg); }
+.skill-sticky:nth-child(2) { transform: rotate(3deg); }
+.skill-sticky:nth-child(3) { transform: rotate(-8deg); }
+.skill-sticky:nth-child(4) { transform: rotate(6deg); }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .about-desktop {
+        flex-direction: column;
+        gap: 50px;
+    }
+    .about-left, .about-right {
+        width: 100%;
+    }
+    .about-internal-string {
+        display: none;
+    }
+}
+/* ========== ABOUT ME SECTION ========== */
+#about-section {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-desktop {
+    position: relative;
+    width: 90vw;
+    height: 90vh;
+    max-width: 1200px;
+}
+
+/* Kertas Utama (Kiri) */
+.about-paper {
+    position: absolute;
+    top: -2%;
+    left: 6%;
+    width: 50%;
+    max-width: 600px;
+    background: #e8dbb9; /* Warna kertas tua */
+    background-image: linear-gradient(to right, rgba(0,0,0,0.02) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0,0,0,0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+    padding: 40px;
+    box-shadow: 5px 10px 25px rgba(0,0,0,0.4), inset 0 0 40px rgba(150,130,90,0.3);
+    border: 1px solid rgba(0,0,0,0.1);
+    transform: rotate(-1deg);
+    cursor: grab;
+    z-index: 5;
+}
+
+.about-paper .red-pin {
+    position: absolute;
+    top: -10px;
+    left: 30%; /* Sesuai mockup, pin agak di tengah */
+}
+
+.about-name {
+    font-family: 'Courier Prime', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.about-line {
+    border: 0;
+    border-bottom: 2px solid #333;
+    margin: 10px 0;
+    opacity: 0.6;
+}
+
+.about-role {
+    font-family: 'Courier Prime', sans-serif;
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.about-desc {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.95rem;
+    color: #222;
+    line-height: 1.6;
+}
+
+/* Post-it ABOUT ME (Tengah Atas) */
+.about-note-title {
+    position: absolute;
+    top: -10%;
+    left: 45%;
+    background-color: #fff200;
+    padding: 15px 30px;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.8rem;
+    color: #111;
+    box-shadow: 3px 5px 15px rgba(0,0,0,0.3);
+    transform: rotate(15deg);
+    z-index: 10;
+    cursor: grab;
+}
+
+/* Post-it DOWNLOAD CV (Kiri Bawah) */
+.about-note-cv {
+    position: absolute;
+    bottom: 0%;
+    left: 5%;
+    background-color: #fff200;
+    padding: 15px 40px;
+    font-family: 'Courier Prime', monospace;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #111;
+    text-decoration: none;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+    transform: rotate(2deg);
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 10;
+}
+.about-note-cv:hover {
+    transform: rotate(0deg) scale(1.05);
+    box-shadow: 4px 8px 15px rgba(0,0,0,0.4);
+}
+
+/* Polaroid (Kanan) */
+.about-polaroid {
+    position: absolute;
+    top: -2%;
+    right: 3%;
+    width: 35%;
+    max-width: 350px;
+    background: #fff;
+    padding: 15px 15px 50px 15px;
+    box-shadow: 5px 10px 25px rgba(0,0,0,0.4);
+    transform: rotate(3deg);
+    cursor: grab;
+    z-index: 6;
+}
+
+.about-polaroid .red-pin {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.polaroid-img-placeholder {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-color: #888; /* Placeholder abu-abu seperti mockup */
+}
+
+.polaroid-text {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.3rem;
+    color: #111;
+}
+
+/* Skills (Kanan Bawah) */
+.about-skills {
+    position: absolute;
+    bottom: -10%;
+    right: 5%;
+    z-index: 5;
+}
+
+.skills-title {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.2rem;
+    color: hsl(0, 100%, 100%);
+    transform: rotate(-20deg);
+    margin-bottom: -1%;
+    margin-left: -15%;
+}
+
+.skills-row {
+    display: flex;
+    gap: 15px;
+}
+
+.skill-note {
+    width: 70px;
+    height: 70px;
+    background-color: #fff200;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    color: #222;
+    cursor: grab;
+}
+
+.skill-note:nth-child(1) { transform: rotate(-3deg); }
+.skill-note:nth-child(2) { transform: rotate(4deg); }
+.skill-note:nth-child(3) { transform: rotate(-6deg); }
+.skill-note:nth-child(4) { transform: rotate(2deg); }
+
+/* Responsif Mobile untuk About Me */
+@media (max-width: 768px) {
+    .about-desktop {
+        width: 100vw;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    
+    .about-paper, .about-note-title, .about-note-cv, .about-polaroid, .about-skills {
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 90%;
+        max-width: 100%;
+        transform: none !important;
+    }
+    
+    .about-note-title {
+        order: -1;
+        width: max-content;
+        transform: rotate(-5deg) !important;
+    }
+    
+    .skills-row {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+/* =========================================
+   MOBILE CIA CRIMINAL RECORD LAYOUT
+========================================= */
+.about-mobile {
+    display: none; /* Hidden on desktop */
+}
+
+@media (max-width: 768px) {
+    .about-desktop {
+        display: none !important;
+    }
+    
+    #about-section {
+        min-height: 100vh;
+        justify-content: center !important;
+        
+        /* ATUR POSISI NAIK/TURUN DOKUMEN DI SINI */
+        /* Jika terlalu tinggi (ke atas), tambahkan padding-top (misal: 50px) */
+        padding-top: 40px !important; 
+        
+        /* Jika mentok dengan navbar di bawah, besarkan padding-bottom ini */
+        padding-bottom: 80px !important; 
+    }
+    
+    .about-mobile {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100vw;
+        padding: 0;
+        background-color: transparent;
+    }
+
+    .cia-document {
+        position: relative;
+        background-color: #fcfcfc;
+        width: 100vw;
+        color: #000;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        padding: 15px 12px;
+        box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.25);
+    }
+
+
+    /* Top Secret Warning */
+    .cia-top-secret {
+        text-align: center;
+        margin-bottom: 30px;
+        margin-top: 10px;
+    }
+
+    .cia-bottom-signature {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 35px;
+        margin-bottom: 10px;
+        border-top: 2px dashed #000;
+        padding-top: 15px;
+    }
+
+    .cia-sign-warning {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-weight: bold;
+        font-size: 0.6rem;
+        text-align: center;
+        color: #b30000;
+        margin-bottom: 25px;
+        letter-spacing: 0.5px;
+    }
+
+    .cia-sign-box {
+        text-align: center;
+        width: 200px;
+    }
+
+    .cia-sign-line {
+        border-top: 1px solid #000;
+        padding-top: 5px;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-weight: bold;
+        font-size: 0.6rem;
+    }
+
+    .cia-sign-text {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 0.65rem;
+        color: #555;
+    }
+    
+    .cia-ts-title {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-weight: 900;
+        font-size: 1.8rem;
+        letter-spacing: 2px;
+        color: #1a1a1a;
+        margin-bottom: 5px;
+    }
+    
+    .cia-ts-desc {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-size: 0.65rem;
+        color: #7a7a7a;
+        line-height: 1.3;
+    }
+
+    /* Header */
+    .cia-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+    
+    .cia-header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .cia-logo-img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
+    .cia-header-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cia-org {
+        font-weight: bold;
+        font-size: 0.6rem;
+    }
+
+    .cia-title {
+        font-weight: 900;
+        font-size: 0.95rem;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
+        margin-bottom: 2px;
+    }
+
+    .cia-id {
+        font-size: 0.45rem;
+        color: #666;
+    }
+
+    .cia-header-right {
+        font-family: 'Courier Prime', Courier, monospace;
+        font-size: 0.5rem;
+        margin-top: 3px;
+    }
+
+    .cia-meta-table {
+        border-collapse: collapse;
+    }
+
+    .cia-meta-table td {
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+        padding: 2px 4px;
+    }
+    
+    .cia-meta-table tr td:first-child {
+        padding-left: 0;
+    }
+    .cia-meta-table tr td:last-child {
+        padding-right: 0;
+        text-align: right;
+    }
+
+    /* Main Body */
+    .cia-body {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .cia-col-left {
+        flex: 0.95;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cia-col-right {
+        flex: 1.05;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cia-subject-id {
+        font-family: 'Courier Prime', Courier, monospace;
+        font-size: 0.85rem;
+        font-weight: bold;
+        margin-bottom: 3px;
+    }
+
+    .cia-hr {
+        border: none;
+        border-top: 3px solid #000;
+        border-bottom: 1px solid #000;
+        height: 5px;
+        margin: 0 0 3px 0;
+    }
+
+    .cia-banner {
+        background-color: #000;
+        color: #fff;
+        font-weight: 900;
+        font-size: 0.85rem;
+        padding: 4px 8px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .cia-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin-bottom: 0px;
+    }
+
+    .cia-list-item {
+        border-bottom: 1.5px solid #000;
+        padding: 2.5px 0;
+        font-size: 0.65rem;
+        line-height: 1.2;
+    }
+    
+    .cia-list-item strong {
+        font-weight: 900;
+        margin-right: 3px;
+        text-transform: uppercase;
+    }
+
+    /* Photo Box */
+    .cia-photo-box {
+        width: 100%;
+        background-color: #8c1111; /* Red background fallback */
+        margin-bottom: 6px;
+        aspect-ratio: 3 / 4.5;
+        overflow: hidden;
+    }
+    
+    .cia-photo-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .cia-wanted-text {
+        font-family: 'Oswald', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-weight: 900;
+        font-size: 1.5rem;
+        text-align: center;
+        line-height: 1;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        transform: scaleY(1.3);
+        margin-top: 5px;
+    }
+
+    /* Report Section */
+    .cia-report-section {
+        margin-top: -24px;
+        margin-bottom: 20px;
+    }
+
+    .cia-report-title {
+        font-weight: 900;
+        font-size: 0.75rem;
+        margin-bottom: 0px;
+    }
+
+    .cia-report-text {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 0.65rem;
+        line-height: 1.4;
+        text-align: justify;
+    }
+
+    /* Footer Section */
+    .cia-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .cia-skills-box {
+        border: 2px solid #000;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cia-skills-header {
+        background-color: #000;
+        color: #fff;
+        font-weight: bold;
+        font-size: 0.85rem;
+        padding: 2px 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .cia-skills-icons {
+        display: flex;
+        background-color: #fff;
+    }
+
+    .cia-skills-icons a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 53px;
+        height: 53px;
+        border-right: 1px solid #000;
+        padding: 5px;
+    }
+    
+    .cia-skills-icons a:last-child {
+        border-right: none;
+    }
+
+    .cia-skills-icons img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .cia-qr-box {
+        text-align: right;
+    }
+
+    .cia-qr-link {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        text-decoration: none;
+        color: #000;
+    }
+
+    .cia-qr-img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 3px;
+    }
+
+    .cia-qr-text {
+        font-weight: 900;
+        font-size: 0.55rem;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
 }

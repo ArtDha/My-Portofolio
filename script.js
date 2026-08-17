@@ -210,18 +210,24 @@ const connections = [
     { from: 'pin-folder-3d', to: 'pin-p3d1' }, // 3D Folder to Photo 1
     { from: 'pin-folder-3d', to: 'pin-p3d2' }, // 3D Folder to Photo 2
     { from: 'pin-folder-3d', to: 'pin-p3d3' }, // 3D Folder to Photo 3
-    { from: 'pin-proj-title', to: 'pin-char' } // Project: Title to Character
+    { from: 'pin-proj-title', to: 'pin-char' }, // Project: Title to Character
+    { from: 'pin-proj-title', to: 'pin-skill', layer: 'under' }, // Project: Title to Skill (lewat bawah)
+    { from: 'pin-skill', to: 'pin-about-2' } // Skill to About Polaroid
 ];
 
 const stringSvg = document.getElementById('string-svg');
-const svgNS = "http://www.w3.org/2000/svg";
+const stringSvgUnder = document.getElementById('string-svg-under');
+let lineElements = [];
 
-// Initialize SVG lines
-const lineElements = [];
+// Initialize strings for connections
 connections.forEach(conn => {
-    const line = document.createElementNS(svgNS, 'line');
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     line.setAttribute('class', 'red-string');
-    stringSvg.appendChild(line);
+    if (conn.layer === 'under' && stringSvgUnder) {
+        stringSvgUnder.appendChild(line);
+    } else {
+        stringSvg.appendChild(line);
+    }
     lineElements.push({
         lineNode: line,
         pinFrom: document.getElementById(conn.from),
@@ -435,23 +441,31 @@ function handleDiagonalScroll() {
             }
         }
         
-        const rawIndex = progress * 4; // 0 to 4
-        const stickyIndex = getStickyVal(rawIndex, 0.4); // 40% of the scroll space is paused (20% before, 20% after center)
-        const stickyProgress = stickyIndex / 4;
+        // --- Path Configuration: [x(vw), y(vh)] ---
+        const path = [
+            {x: 0, y: 0}, // Home (Col 1, Row 1)
+            {x: 1, y: 0}, // Project (Col 2, Row 1)
+            {x: 2, y: 1}, // Skill (Col 3, Row 2)
+            {x: 1, y: 1}, // About Me (Col 2, Row 2)
+            {x: 1, y: 2}  // Contact (Col 2, Row 3)
+        ];
         
-        let tx = 0;
-        let ty = 0;
+        const rawIndex = progress * (path.length - 1);
+        const stickyIndex = getStickyVal(rawIndex, 0.4); 
         
-        if (stickyProgress <= 0.25) {
-            // First 25% of scroll: Move RIGHT to Project (B1)
-            const xProgress = stickyProgress / 0.25;
-            tx = -xProgress * window.innerWidth;
-            ty = 0;
+        // Find segment
+        const segment = Math.floor(stickyIndex);
+        const segmentProgress = stickyIndex - segment;
+        
+        let tx = 0, ty = 0;
+        if (segment >= path.length - 1) {
+            tx = -path[path.length - 1].x * window.innerWidth;
+            ty = -path[path.length - 1].y * window.innerHeight;
         } else {
-            // Remaining 75% of scroll: Move DIAGONAL DOWN-RIGHT to Skill (C2), About (D3), Contact (E4)
-            const diagProgress = (stickyProgress - 0.25) / 0.75;
-            tx = -(1 + diagProgress * 3) * window.innerWidth;
-            ty = -(diagProgress * 3) * window.innerHeight;
+            const start = path[segment];
+            const end = path[segment + 1];
+            tx = -(start.x + (end.x - start.x) * segmentProgress) * window.innerWidth;
+            ty = -(start.y + (end.y - start.y) * segmentProgress) * window.innerHeight;
         }
         
         document.querySelector('.board').style.transform = `translate3d(${tx}px, ${ty}px, 0)`;

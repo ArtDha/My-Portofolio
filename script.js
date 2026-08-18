@@ -34,6 +34,10 @@ navPins.forEach(pin => {
             e.preventDefault();
             const targetSection = document.querySelector(targetId);
             
+            // Manually update active class immediately for better UX
+            navPins.forEach(p => p.classList.remove('active'));
+            pin.classList.add('active');
+            
             if (targetSection) {
                 if (document.body.classList.contains('diagonal-mode')) {
                     const maxScroll = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
@@ -61,8 +65,8 @@ navPins.forEach(pin => {
 const sections = document.querySelectorAll('.evidence-container');
 const observerOptions = {
     root: null,
-    rootMargin: '0px',
-    threshold: 0.5 // Trigger when at least 50% of the section is visible
+    rootMargin: '-10% 0px -40% 0px',
+    threshold: 0 
 };
 
 const observer = new IntersectionObserver((entries) => {

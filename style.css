@@ -1732,7 +1732,7 @@ a.portal-link:hover {
 /* Polaroid (Kanan) */
 .about-polaroid {
     position: absolute;
-    top: -2%;
+    top: -5%;
     right: 3%;
     width: 35%;
     max-width: 350px;
@@ -1771,7 +1771,7 @@ a.portal-link:hover {
 /* Skills (Kanan Bawah) */
 .about-skills {
     position: absolute;
-    bottom: -10%;
+    bottom: -15%;
     right: 5%;
     z-index: 5;
 }
@@ -1890,63 +1890,63 @@ a.portal-link:hover {
     /* Top Secret Warning */
     .cia-top-secret {
         text-align: center;
-        margin-bottom: 30px;
-        margin-top: 10px;
+        margin-bottom: clamp(12px, 3.5vw, 20px);
+        margin-top: 5px;
     }
 
     .cia-bottom-signature {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 35px;
-        margin-bottom: 10px;
+        margin-top: clamp(15px, 4vw, 25px);
+        margin-bottom: 5px;
         border-top: 2px dashed #000;
-        padding-top: 15px;
+        padding-top: clamp(8px, 2.5vw, 15px);
     }
 
     .cia-sign-warning {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         font-weight: bold;
-        font-size: 0.6rem;
+        font-size: clamp(0.55rem, 2.5vw, 0.6rem);
         text-align: center;
         color: #b30000;
-        margin-bottom: 25px;
+        margin-bottom: clamp(10px, 3vw, 18px);
         letter-spacing: 0.5px;
     }
 
     .cia-sign-box {
         text-align: center;
-        width: 200px;
+        width: clamp(160px, 50vw, 200px);
     }
 
     .cia-sign-line {
         border-top: 1px solid #000;
-        padding-top: 5px;
+        padding-top: 3px;
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         font-weight: bold;
-        font-size: 0.6rem;
+        font-size: clamp(0.55rem, 2.5vw, 0.6rem);
     }
 
     .cia-sign-text {
         font-family: 'Times New Roman', Times, serif;
-        font-size: 0.65rem;
+        font-size: clamp(0.58rem, 2.6vw, 0.65rem);
         color: #555;
     }
     
     .cia-ts-title {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         font-weight: 900;
-        font-size: 1.8rem;
+        font-size: clamp(1.5rem, 7vw, 1.8rem);
         letter-spacing: 2px;
         color: #1a1a1a;
-        margin-bottom: 5px;
+        margin-bottom: 3px;
     }
     
     .cia-ts-desc {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        font-size: 0.65rem;
+        font-size: clamp(0.55rem, 2.5vw, 0.65rem);
         color: #7a7a7a;
-        line-height: 1.3;
+        line-height: 1.25;
     }
 
     /* Header */
@@ -1954,18 +1954,18 @@ a.portal-link:hover {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 15px;
+        margin-bottom: clamp(8px, 2.5vw, 14px);
     }
     
     .cia-header-left {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: clamp(6px, 2vw, 10px);
     }
 
     .cia-logo-img {
-        width: 40px;
-        height: 40px;
+        width: clamp(38px, 10vw, 48px);
+        height: clamp(38px, 10vw, 48px);
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -1977,26 +1977,26 @@ a.portal-link:hover {
 
     .cia-org {
         font-weight: bold;
-        font-size: 0.6rem;
+        font-size: clamp(0.55rem, 2.5vw, 0.6rem);
     }
 
     .cia-title {
         font-weight: 900;
-        font-size: 0.95rem;
+        font-size: clamp(0.85rem, 4vw, 0.95rem);
         letter-spacing: -0.5px;
         line-height: 1.1;
-        margin-bottom: 2px;
+        margin-bottom: 1px;
     }
 
     .cia-id {
-        font-size: 0.45rem;
+        font-size: clamp(0.4rem, 1.8vw, 0.45rem);
         color: #666;
     }
 
     .cia-header-right {
         font-family: 'Courier Prime', Courier, monospace;
-        font-size: 0.5rem;
-        margin-top: 3px;
+        font-size: clamp(0.45rem, 2vw, 0.5rem);
+        margin-top: 2px;
     }
 
     .cia-meta-table {
@@ -2006,7 +2006,7 @@ a.portal-link:hover {
     .cia-meta-table td {
         border-top: 1px solid #000;
         border-bottom: 1px solid #000;
-        padding: 2px 4px;
+        padding: 1.5px 3px;
     }
     
     .cia-meta-table tr td:first-child {
@@ -2021,27 +2021,27 @@ a.portal-link:hover {
     .cia-body {
         display: flex;
         gap: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
+        align-items: stretch;
     }
 
     .cia-col-left {
-        flex: 0.95;
+        flex: 1.15;
         display: flex;
         flex-direction: column;
     }
 
     .cia-col-right {
-        flex: 1.05;
+        flex: 0.85;
         display: flex;
         flex-direction: column;
-        align-items: stretch;
     }
 
     .cia-subject-id {
         font-family: 'Courier Prime', Courier, monospace;
-        font-size: 0.85rem;
+        font-size: clamp(0.75rem, 3.5vw, 0.85rem);
         font-weight: bold;
-        margin-bottom: 3px;
+        margin-bottom: 2px;
     }
 
     .cia-hr {
@@ -2056,7 +2056,7 @@ a.portal-link:hover {
         background-color: #000;
         color: #fff;
         font-weight: 900;
-        font-size: 0.85rem;
+        font-size: clamp(0.75rem, 3.5vw, 0.85rem);
         padding: 4px 8px;
         margin-bottom: 10px;
         text-transform: uppercase;
@@ -2067,20 +2067,24 @@ a.portal-link:hover {
         display: flex;
         flex-direction: column;
         gap: 0;
-        margin-bottom: 0px;
+        margin-bottom: 0;
     }
 
     .cia-list-item {
-        border-bottom: 1.5px solid #000;
+        border-bottom: 1px solid #000;
         padding: 2.5px 0;
-        font-size: 0.65rem;
+        font-size: clamp(0.65rem, 3vw, 0.75rem);
         line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
     .cia-list-item strong {
         font-weight: 900;
-        margin-right: 3px;
+        margin-right: 2px;
         text-transform: uppercase;
+        font-size: 0.85em;
     }
 
     /* Photo Box */
@@ -2088,7 +2092,8 @@ a.portal-link:hover {
         width: 100%;
         background-color: #8c1111; /* Red background fallback */
         margin-bottom: 6px;
-        aspect-ratio: 3 / 4.5;
+        flex-grow: 1;
+        min-height: 80px;
         overflow: hidden;
     }
     
@@ -2101,32 +2106,39 @@ a.portal-link:hover {
     .cia-wanted-text {
         font-family: 'Oswald', 'Helvetica Neue', Helvetica, Arial, sans-serif;
         font-weight: 900;
-        font-size: 1.5rem;
+        font-size: clamp(1.2rem, 5.5vw, 1.5rem);
         text-align: center;
         line-height: 1;
-        letter-spacing: -1px;
+        letter-spacing: -0.5px;
         text-transform: uppercase;
         white-space: nowrap;
         transform: scaleY(1.3);
-        margin-top: 5px;
+        transform-origin: bottom center;
+        margin-top: auto;
+        margin-bottom: 0;
+        padding-top: 4px;
     }
 
     /* Report Section */
     .cia-report-section {
-        margin-top: -24px;
-        margin-bottom: 20px;
+        margin-top: 0px;
+        margin-bottom: clamp(10px, 3vw, 16px);
     }
 
     .cia-report-title {
         font-weight: 900;
-        font-size: 0.75rem;
-        margin-bottom: 0px;
+        font-size: clamp(0.65rem, 3vw, 0.75rem);
+        line-height: 1;
+        margin-top: auto;
+        margin-bottom: 0;
+        padding-top: 4px;
+        padding-bottom: 1px;
     }
 
     .cia-report-text {
         font-family: 'Times New Roman', Times, serif;
-        font-size: 0.65rem;
-        line-height: 1.4;
+        font-size: clamp(0.58rem, 2.6vw, 0.65rem);
+        line-height: 1.3;
         text-align: justify;
     }
 
@@ -2138,7 +2150,7 @@ a.portal-link:hover {
     }
 
     .cia-skills-box {
-        border: 2px solid #000;
+        border: 1.5px solid #000;
         display: flex;
         flex-direction: column;
     }
@@ -2147,8 +2159,8 @@ a.portal-link:hover {
         background-color: #000;
         color: #fff;
         font-weight: bold;
-        font-size: 0.85rem;
-        padding: 2px 10px;
+        font-size: clamp(0.75rem, 3.5vw, 0.85rem);
+        padding: 1.5px 6px;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -2162,8 +2174,8 @@ a.portal-link:hover {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 53px;
-        height: 53px;
+        width: clamp(45px, 12vw, 53px);
+        height: clamp(45px, 12vw, 53px);
         border-right: 1px solid #000;
         padding: 5px;
     }
@@ -2191,14 +2203,14 @@ a.portal-link:hover {
     }
 
     .cia-qr-img {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 3px;
+        width: clamp(50px, 14vw, 60px);
+        height: clamp(50px, 14vw, 60px);
+        margin-bottom: 2px;
     }
 
     .cia-qr-text {
         font-weight: 900;
-        font-size: 0.55rem;
+        font-size: clamp(0.5rem, 2.2vw, 0.55rem);
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
 }
